@@ -5,16 +5,16 @@ import java.awt.event.ActionListener;
 
 public class Hoofdscherm extends JFrame implements ActionListener {
 
-    JPanel generalPanel = new JPanel();
-    JPanel pakrobotPanel = new JPanel();
-    JPanel inpakrobotPanel = new JPanel();
-    JPanel dataPanel = new JPanel();
+    private JPanel generalPanel = new JPanel();
+    private JPanel pakrobotPanel = new JPanel();
+    private JPanel inpakrobotPanel = new JPanel();
+    private JPanel dataPanel = new JPanel();
 
-    JTabbedPane jTabbedPane = new JTabbedPane();
+    private JTabbedPane jTabbedPane = new JTabbedPane();
 
-    JButton addProductButton;
-    JButton editOrderButton;
-    JButton placeOrderButton;
+    private JButton addProductButton;
+    private JButton editOrderButton;
+    private JButton placeOrderButton;
 
     public Hoofdscherm(){
         setTitle("HMI");
