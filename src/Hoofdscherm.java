@@ -16,7 +16,10 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     private JButton editOrderButton;
     private JButton placeOrderButton;
 
+    private Stelling stelling;
+
     public Hoofdscherm(){
+        stelling = new Stelling();
         setTitle("HMI");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(500,500);
