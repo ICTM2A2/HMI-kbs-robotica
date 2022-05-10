@@ -53,7 +53,7 @@ public class Stelling {
     public void voegProductToe(int productId){
         boolean isBeschikbaar = true;
         for (Vak vak: huidigeOrder.getProducten()){
-            
+
         }
         huidigeOrder.getProducten().add(opslagplekken[productId]);
 

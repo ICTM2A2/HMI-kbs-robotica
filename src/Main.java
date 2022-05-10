@@ -4,7 +4,6 @@ public class Main {
         h1.getStelling().maakOrder();
         h1.getStelling().voegProductToe(0);
         h1.getStelling().voegProductToe(3);
-        h1.getStelling().voegProductToe(3);
 
         h1.getStelling().printOrder();
         h1.getStelling().plaatsOrder();
