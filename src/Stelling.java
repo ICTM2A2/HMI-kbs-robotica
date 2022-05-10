@@ -51,14 +51,35 @@ public class Stelling {
     }
 
     public void voegProductToe(int productId){
-        boolean isBeschikbaar = true;
-        for (Vak vak: huidigeOrder.getProducten()){
+        //product arraycheck
+        if (productId>=0 && productId<=24) {
+            //er mogen maar drie producten in de order zitten
+            if(huidigeOrder.getProducten().size() < 3) {
+                //ervoor zorgen dat een product niet meerdere keren toegevoegd kan worden aan de order
+                boolean isBeschikbaar = true;
+                for (Vak vak : huidigeOrder.getProducten()) {
+                    if (productId == vak.getVakId()) {
+                        isBeschikbaar = false;
+                    }
+                }
 
+                if (isBeschikbaar) {
+                    //product wordt toegevoegd
+                    huidigeOrder.getProducten().add(opslagplekken[productId]);
+                    System.out.println("product " + productId + " is aan je order toegevoegd");
+                    //TSP algoritme --> producten sorteren om het pad te bepalen
+
+                } else {
+                    //product niet toevoegen --> zit al in order
+                    System.out.println("product " + productId + " zit al in je order!");
+                }
+            } else {
+                System.out.println("je order zit vol!");
+            }
+        } else {
+            //productId valt buiten array
+            System.out.println("productId moet binnen de stelling zijn([0,24])");
         }
-        huidigeOrder.getProducten().add(opslagplekken[productId]);
-
-        //TSP algoritme --> producten sorteren om het pad te bepalen
-
     }
 
 }
