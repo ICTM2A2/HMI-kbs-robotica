@@ -10,4 +10,16 @@ public class Vak {
         xPlek = x;
         yPlek = y;
     }
+
+    public String toString(){
+        return "Vak: " + vakId + ", x: " + xPlek + " y: " + yPlek + ", bezet-status: " + isBezet;
+    }
+
+    public void setEmpty(){
+        this.isBezet = false;
+    }
+
+    public int getVakId() {
+        return vakId;
+    }
 }

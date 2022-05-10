@@ -50,4 +50,8 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
+
+    public Stelling getStelling() {
+        return stelling;
+    }
 }
