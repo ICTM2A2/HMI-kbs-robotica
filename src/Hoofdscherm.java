@@ -4,30 +4,39 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Hoofdscherm extends JFrame implements ActionListener {
-
+    //tabs
     private JPanel generalPanel = new JPanel();
-    private JPanel pakrobotPanel = new JPanel();
     private JPanel inpakrobotPanel = new JPanel();
     private JPanel dataPanel = new JPanel();
-
     private JTabbedPane jTabbedPane = new JTabbedPane();
+    private int width = 1000;
+    private int height = 800;
 
+    //general tab
     private JButton addProductButton;
     private JButton editOrderButton;
     private JButton placeOrderButton;
 
     private JTextArea JTAtext;
 
+    //pakrobot tab
+    private TSPPanel pakrobotTekening;
+
+    //inpakrobot tab
+    private BPPPanel inpakrobotTekening;
+
+    //applicatie content
     private Stelling stelling;
 
     public Hoofdscherm(){
         stelling = new Stelling(this);
         setTitle("HMI");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(500,500);
+        setSize(width,height);
 
         generalPanel.setLayout(new FlowLayout());
 
+        //general tab content
         addProductButton = new JButton("product toevoegen");
         editOrderButton = new JButton("order aanpassen");
         placeOrderButton = new JButton("order plaatsen");
@@ -37,7 +46,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         generalPanel.add(addProductButton);
         generalPanel.add(editOrderButton);
         generalPanel.add(placeOrderButton);
-        JTAtext = new JTextArea(20,40);
+        JTAtext = new JTextArea(30,80);
         JTAtext.setEditable(false);
         generalPanel.add(JTAtext);
         JScrollPane scrollbar = new JScrollPane(JTAtext);
@@ -45,12 +54,15 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         scrollbar.setVerticalScrollBarPolicy (ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         JTAtext.append("test");
-        pakrobotPanel.add(new JLabel("test2"));
+
+        //pakrobot tab content
+        pakrobotTekening = new TSPPanel(this);
+
         inpakrobotPanel.add(new JLabel("test3"));
         dataPanel.add(new JLabel("test4"));
 
         jTabbedPane.add("general", generalPanel);
-        jTabbedPane.add("pakrobot", pakrobotPanel);
+        jTabbedPane.add("pakrobot", pakrobotTekening);
         jTabbedPane.add("inpakrobot", inpakrobotPanel);
         jTabbedPane.add("WWI-data", dataPanel);
         add(jTabbedPane);
