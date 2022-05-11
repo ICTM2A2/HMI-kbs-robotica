@@ -17,33 +17,33 @@ public class TSPPanel extends JPanel {
             //rij 1
             {(xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             {(5*xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
-            {},
-            {},
-            {},
+            {(9*xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(13*xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(17*xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             //rij 2
-            {},
-            {},
-            {},
-            {},
-            {},
+            {(xMax / 20), (5*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(5*xMax / 20), (5*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(9*xMax / 20), (5*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(13*xMax / 20), (5*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(17*xMax / 20), (5*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             //rij3
-            {},
-            {},
-            {},
-            {},
-            {},
+            {(xMax / 20), (9*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(5*xMax / 20), (9*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(9*xMax / 20), (9*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(13*xMax / 20), (9*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(17*xMax / 20), (9*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             //rij4
-            {},
-            {},
-            {},
-            {},
-            {},
+            {(xMax / 20), (13*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(5*xMax / 20), (13*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(9*xMax / 20), (13*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(13*xMax / 20), (13*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(17*xMax / 20), (13*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             //rij5
-            {},
-            {},
-            {},
-            {},
-            {}
+            {(xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(5*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(9*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(13*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
+            {(17*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))}
     };
     }
 
@@ -66,8 +66,10 @@ public class TSPPanel extends JPanel {
         g.drawLine(0,(4*yMax/5),xMax,(4*yMax/5));
 
         //producten
-        for(int i=0; i<5;i++){
-            g.fillRect(productCoordinaten[i][0],productCoordinaten[i][1],productCoordinaten[i][2],productCoordinaten[i][3]);
+        for(int i=0; i<25;i++){
+            if(hoofdscherm.getStelling().getOpslagplekken()[i].isBezet()) {
+                g.fillRect(productCoordinaten[i][0], productCoordinaten[i][1], productCoordinaten[i][2], productCoordinaten[i][3]);
+            }
         }
     }
 }

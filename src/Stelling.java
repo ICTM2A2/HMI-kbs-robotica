@@ -86,18 +86,24 @@ public class Stelling {
                             isBeschikbaar = false;
                         }
                     }
+                    //voorraad checken
+                    if (opslagplekken[productId].isBezet()) {
+                        if (isBeschikbaar) {
+                            //product wordt toegevoegd
+                            huidigeOrder.getProducten().add(opslagplekken[productId]);
+                            System.out.println("product " + productId + " is aan je order toegevoegd");
+                            hoofdscherm.schrijfTekst("product " + productId + " is aan je order toegevoegd");
+                            //TSP algoritme --> producten sorteren om het pad te bepalen
 
-                    if (isBeschikbaar) {
-                        //product wordt toegevoegd
-                        huidigeOrder.getProducten().add(opslagplekken[productId]);
-                        System.out.println("product " + productId + " is aan je order toegevoegd");
-                        hoofdscherm.schrijfTekst("product " + productId + " is aan je order toegevoegd");
-                        //TSP algoritme --> producten sorteren om het pad te bepalen
-
-                    } else {
-                        //product niet toevoegen --> zit al in order
-                        System.out.println("product " + productId + " zit al in je order!");
-                        hoofdscherm.schrijfTekst("product " + productId + " zit al in je order!");
+                        } else {
+                            //product niet toevoegen --> zit al in order
+                            System.out.println("product " + productId + " zit al in je order!");
+                            hoofdscherm.schrijfTekst("product " + productId + " zit al in je order!");
+                        }
+                    } else{
+                        //product is niet op voorraad
+                        System.out.println("product " + productId + " is niet meer beschikbaar");
+                        hoofdscherm.schrijfTekst("product " + productId + " is niet meer beschikbaar");
                     }
                 } else {
                     System.out.println("je order zit vol!");
@@ -139,4 +145,7 @@ public class Stelling {
         hoofdscherm.schrijfTekst("\n");
     }
 
+    public Vak[] getOpslagplekken() {
+        return opslagplekken;
+    }
 }

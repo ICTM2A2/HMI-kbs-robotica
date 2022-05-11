@@ -80,6 +80,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         }
         if(e.getSource()==placeOrderButton){
             stelling.plaatsOrder();
+            pakrobotTekening.repaint();
         }
     }
 

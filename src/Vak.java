@@ -22,4 +22,8 @@ public class Vak {
     public int getVakId() {
         return vakId;
     }
+
+    public boolean isBezet() {
+        return isBezet;
+    }
 }
