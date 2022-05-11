@@ -16,6 +16,8 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     private JButton editOrderButton;
     private JButton placeOrderButton;
 
+    private JTextArea JTAtext;
+
     private Stelling stelling;
 
     public Hoofdscherm(){
@@ -32,6 +34,11 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         generalPanel.add(addProductButton);
         generalPanel.add(editOrderButton);
         generalPanel.add(placeOrderButton);
+        JTAtext = new JTextArea(10,40);
+        JScrollPane scrollbar = new JScrollPane(JTAtext);
+        JTAtext.setEditable(false);
+        JTAtext.append("test");
+        generalPanel.add(JTAtext);
 
         pakrobotPanel.add(new JLabel("test2"));
         inpakrobotPanel.add(new JLabel("test3"));
