@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 
 public class Stelling {
+    private Hoofdscherm hoofdscherm;
     private Vak[] opslagplekken;
     private ArrayList<Order> orderlijst;
     private Pakrobot pakrobot;
     private Inpakrobot inpakrobot;
     private Order huidigeOrder;
 
-    public Stelling(){
+    public Stelling(Hoofdscherm hoofdscherm){
+        this.hoofdscherm = hoofdscherm;
         opslagplekken = new Vak[25];
         int plek = 0;
         for(int yPlek = 0; yPlek < 5; yPlek++){
@@ -22,19 +24,26 @@ public class Stelling {
     public void printVakken(){
         for(Vak vak: opslagplekken){
             System.out.println(vak);
+            hoofdscherm.schrijfTekst(String.valueOf(vak));
         }
     }
 
     public void printOrder(){
         System.out.println("Order: datum " + huidigeOrder.getDatum());
+        hoofdscherm.schrijfTekst("Order: datum " + huidigeOrder.getDatum());
+
         System.out.println("Producten");
+        hoofdscherm.schrijfTekst("Producten");
         if (huidigeOrder.getProducten().size()>0) {
             for (Vak vak : huidigeOrder.getProducten()) {
                 System.out.println("-- " + vak);
+                hoofdscherm.schrijfTekst("-- " + vak);
             }
         } else {
             System.out.println("--Uw order is nog leeg!");
+            hoofdscherm.schrijfTekst("--Uw order is nog leeg!");
         }
+        hoofdscherm.schrijfTekst("\n");
     }
 
     public void maakOrder(){
@@ -53,9 +62,12 @@ public class Stelling {
             }
             //order verwijderen uit actieve positie
             huidigeOrder = null;
+            hoofdscherm.schrijfTekst("uw order is geplaatst!");
         } else {
             System.out.println("uw order is nog leeg!");
+            hoofdscherm.schrijfTekst("uw order is nog leeg!");
         }
+        hoofdscherm.schrijfTekst("\n");
     }
 
     public void voegProductToe(int productId){
@@ -79,39 +91,52 @@ public class Stelling {
                         //product wordt toegevoegd
                         huidigeOrder.getProducten().add(opslagplekken[productId]);
                         System.out.println("product " + productId + " is aan je order toegevoegd");
+                        hoofdscherm.schrijfTekst("product " + productId + " is aan je order toegevoegd");
                         //TSP algoritme --> producten sorteren om het pad te bepalen
 
                     } else {
                         //product niet toevoegen --> zit al in order
                         System.out.println("product " + productId + " zit al in je order!");
+                        hoofdscherm.schrijfTekst("product " + productId + " zit al in je order!");
                     }
                 } else {
                     System.out.println("je order zit vol!");
+                    hoofdscherm.schrijfTekst("je order zit vol!");
                 }
             } else {
                 //productId valt buiten array
                 System.out.println("productId moet binnen de stelling zijn([0,24])");
+                hoofdscherm.schrijfTekst("productId moet binnen de stelling zijn([0,24])");
             }
             printOrder();
     }
 
-    public void verwijderProduct(int productId){
-        if(productId>=0 && productId <=24) {
-            boolean isVerwijderd = false;
-            for (int i = 0; i < huidigeOrder.getProducten().size(); i++) {
-                if (productId == huidigeOrder.getProducten().get(i).getVakId()) {
-                    huidigeOrder.getProducten().remove(i);
-                    isVerwijderd = true;
-                    System.out.println("product " + productId + " is verwijderd uit uw order");
+    public void verwijderProduct(int productId) {
+        if (huidigeOrder != null && huidigeOrder.getProducten().size()>0) {
+            if (productId >= 0 && productId <= 24) {
+                boolean isVerwijderd = false;
+                for (int i = 0; i < huidigeOrder.getProducten().size(); i++) {
+                    if (productId == huidigeOrder.getProducten().get(i).getVakId()) {
+                        huidigeOrder.getProducten().remove(i);
+                        isVerwijderd = true;
+                        System.out.println("product " + productId + " is verwijderd uit uw order");
+                        hoofdscherm.schrijfTekst("product " + productId + " is verwijderd uit uw order");
+                    }
                 }
+                if (!isVerwijderd) {
+                    System.out.println("product" + productId + " zit niet in uw order en kan dus niet verwijderd worden");
+                    hoofdscherm.schrijfTekst("product" + productId + " zit niet in uw order en kan dus niet verwijderd worden");
+                }
+            } else {
+                System.out.println("product " + productId + " staat niet in de stelling");
+                hoofdscherm.schrijfTekst("product " + productId + " staat niet in de stelling");
             }
-            if (!isVerwijderd) {
-                System.out.println("product" + productId + " zit niet in uw order en kan dus niet verwijderd worden");
-            }
-        } else {
-            System.out.println("product " + productId + " staat niet in de stelling");
+            printOrder();
+        } else{
+            System.out.println("voeg eerst producten toe");
+            hoofdscherm.schrijfTekst("voeg eerst producten toe");
         }
-        printOrder();
+        hoofdscherm.schrijfTekst("\n");
     }
 
 }
