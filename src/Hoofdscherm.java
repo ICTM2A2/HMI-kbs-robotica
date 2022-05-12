@@ -75,10 +75,12 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         if(e.getSource()==addProductButton){
             OrderDialoogMaken orderDialoogMaken = new OrderDialoogMaken(this);
             pakrobotTekening.repaint();
+            stelling.printOrder();
         }
         if(e.getSource()==editOrderButton){
             OrderDialoogAanpassen orderDialoogAanpassen = new OrderDialoogAanpassen(this);
             pakrobotTekening.repaint();
+            stelling.printOrder();
         }
         if(e.getSource()==placeOrderButton){
             stelling.plaatsOrder();
@@ -92,5 +94,9 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     public void schrijfTekst(String text){
         JTAtext.append("\n" + text);
         JTAtext.setCaretPosition(JTAtext.getDocument().getLength());
+    }
+
+    public TSPPanel getPakrobotTekening() {
+        return pakrobotTekening;
     }
 }

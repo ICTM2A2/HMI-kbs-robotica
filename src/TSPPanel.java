@@ -19,9 +19,6 @@ public class TSPPanel extends JPanel {
         xMax = 980;
         yMax = 600;
         setPreferredSize(new Dimension(xMax,yMax));
-        robotRadius=20;
-        robotX = 0;
-        robotY = yMax-(robotRadius/2);
         productCoordinaten = new int[][]{
             //rij 1
             {(xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
@@ -53,7 +50,10 @@ public class TSPPanel extends JPanel {
             {(9*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             {(13*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             {(17*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))}
-    };
+        };
+        robotRadius=20;
+        robotX = productCoordinaten[20][0];
+        robotY = productCoordinaten[20][1];
     }
 
     @Override
@@ -83,6 +83,9 @@ public class TSPPanel extends JPanel {
             //--lijnen tsp
             int productNr = 0;
             ArrayList<Vak> orderProducten = hoofdscherm.getStelling().getHuidigeOrder().getProducten();
+
+
+
             for(int i = 0; i<hoofdscherm.getStelling().getHuidigeOrder().getProducten().size();i++){
                 if(productNr==0) {
                     g.drawLine(robotX, robotY, productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
@@ -103,5 +106,13 @@ public class TSPPanel extends JPanel {
         g.setColor(Color.red);
         g.fillOval(robotX,robotY,robotRadius,robotRadius);
 
+    }
+
+    public int getRobotX() {
+        return robotX;
+    }
+
+    public int getRobotY() {
+        return robotY;
     }
 }

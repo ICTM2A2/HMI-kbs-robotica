@@ -93,9 +93,8 @@ public class Stelling {
                         if (isBeschikbaar) {
                             //product wordt toegevoegd
                             huidigeOrder.getProducten().add(opslagplekken[productId]);
-                            System.out.println("product " + productId + " is aan je order toegevoegd");
-                            hoofdscherm.schrijfTekst("product " + productId + " is aan je order toegevoegd");
                             //TSP algoritme --> producten sorteren om het pad te bepalen
+                            sorteerTSP();
 
                         } else {
                             //product niet toevoegen --> zit al in order
@@ -116,7 +115,6 @@ public class Stelling {
                 System.out.println("productId moet binnen de stelling zijn([0,24])");
                 hoofdscherm.schrijfTekst("productId moet binnen de stelling zijn([0,24])");
             }
-            printOrder();
     }
 
     public void verwijderProduct(int productId) {
@@ -129,6 +127,7 @@ public class Stelling {
                         isVerwijderd = true;
                         System.out.println("product " + productId + " is verwijderd uit uw order");
                         hoofdscherm.schrijfTekst("product " + productId + " is verwijderd uit uw order");
+                        sorteerTSP();
                     }
                 }
                 if (!isVerwijderd) {
@@ -139,12 +138,48 @@ public class Stelling {
                 System.out.println("product " + productId + " staat niet in de stelling");
                 hoofdscherm.schrijfTekst("product " + productId + " staat niet in de stelling");
             }
-            printOrder();
         } else{
             System.out.println("voeg eerst producten toe");
             hoofdscherm.schrijfTekst("voeg eerst producten toe");
         }
         hoofdscherm.schrijfTekst("\n");
+    }
+
+    public void sorteerTSP(){
+        if(huidigeOrder.getProducten().size()==2){
+            //dichtsbijzijnde product naar eerste plek verplaatsen
+            if(!huidigeOrder.getProducten().get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))) {
+                Vak vak1;
+                vak1 = huidigeOrder.getProducten().get(0);
+                huidigeOrder.getProducten().remove(0);
+                voegProductToe(vak1.getVakId());
+            }
+        } else if (huidigeOrder.getProducten().size()==3){
+            //net zo lang de producten doorschuiven totdat het dichtsbijzijnde product op plek 1 staat
+            if(!huidigeOrder.getProducten().get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))){
+                Vak vak1;
+                vak1 = huidigeOrder.getProducten().get(0);
+                huidigeOrder.getProducten().remove(0);
+                voegProductToe(vak1.getVakId());
+                if(!huidigeOrder.getProducten().get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))){
+                    vak1 = huidigeOrder.getProducten().get(0);
+                    huidigeOrder.getProducten().remove(0);
+                    voegProductToe(vak1.getVakId());
+                }
+                //de tweede en eerste plek omdraaien als de ene dichterbij die op plek 1 is
+                if(!huidigeOrder.getProducten().get(1).equals(huidigeOrder.zoekDichtsbij(huidigeOrder.getProducten().get(0).getxPlek(),huidigeOrder.getProducten().get(0).getyPlek()))){
+                    vak1 = huidigeOrder.getProducten().get(1);
+                    huidigeOrder.getProducten().remove(1);
+                    voegProductToe(vak1.getVakId());
+                }
+                //de tweede en eerste plek omdraaien als de ene dichterbij die op plek 1 is, terwijl het product op plek 1 al goed staat
+            } else if(!huidigeOrder.getProducten().get(1).equals(huidigeOrder.zoekDichtsbij(huidigeOrder.getProducten().get(0).getxPlek(),huidigeOrder.getProducten().get(0).getyPlek()))) {
+                Vak vak1;
+                vak1 = huidigeOrder.getProducten().get(1);
+                huidigeOrder.getProducten().remove(1);
+                voegProductToe(vak1.getVakId());
+            }
+        }
     }
 
     public Vak[] getOpslagplekken() {
