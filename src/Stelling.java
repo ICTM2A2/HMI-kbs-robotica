@@ -11,10 +11,12 @@ public class Stelling {
     public Stelling(Hoofdscherm hoofdscherm){
         this.hoofdscherm = hoofdscherm;
         opslagplekken = new Vak[25];
+        int arrayPlek = 0;
         int plek = 0;
-        for(int yPlek = 0; yPlek < 5; yPlek++){
+        for(int yPlek = 4; yPlek >= 0; yPlek--){
             for(int xPlek = 0; xPlek < 5; xPlek++){
-                opslagplekken[plek] = new Vak(xPlek, yPlek, plek);
+                opslagplekken[arrayPlek] = new Vak(xPlek, yPlek, plek);
+                arrayPlek++;
                 plek++;
             }
         }
@@ -147,5 +149,9 @@ public class Stelling {
 
     public Vak[] getOpslagplekken() {
         return opslagplekken;
+    }
+
+    public Order getHuidigeOrder() {
+        return huidigeOrder;
     }
 }

@@ -26,4 +26,12 @@ public class Vak {
     public boolean isBezet() {
         return isBezet;
     }
+
+    public int getxPlek() {
+        return xPlek;
+    }
+
+    public int getyPlek() {
+        return yPlek;
+    }
 }

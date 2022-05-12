@@ -5,15 +5,24 @@ import java.util.ArrayList;
 public class TSPPanel extends JPanel {
     private Hoofdscherm hoofdscherm;
 
-    private int xMax = 980;
-    private int yMax = 600;
+    private final int xMax;
+    private final int yMax;
 
-    private int productCoordinaten[][];
+    private final int[][] productCoordinaten;
+
+    private int robotX;
+    private int robotY;
+    private int robotRadius;
 
     public TSPPanel(Hoofdscherm hoofdscherm){
-    this.hoofdscherm = hoofdscherm;
-    setPreferredSize(new Dimension(xMax,yMax));
-    productCoordinaten = new int[][]{
+        this.hoofdscherm = hoofdscherm;
+        xMax = 980;
+        yMax = 600;
+        setPreferredSize(new Dimension(xMax,yMax));
+        robotRadius=20;
+        robotX = 0;
+        robotY = yMax-(robotRadius/2);
+        productCoordinaten = new int[][]{
             //rij 1
             {(xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
             {(5*xMax / 20), (yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))},
@@ -66,10 +75,33 @@ public class TSPPanel extends JPanel {
         g.drawLine(0,(4*yMax/5),xMax,(4*yMax/5));
 
         //producten
-        for(int i=0; i<25;i++){
-            if(hoofdscherm.getStelling().getOpslagplekken()[i].isBezet()) {
-                g.fillRect(productCoordinaten[i][0], productCoordinaten[i][1], productCoordinaten[i][2], productCoordinaten[i][3]);
+        //--producten tekenen uit order
+        if(hoofdscherm.getStelling().getHuidigeOrder()!=null) {
+            for (Vak vak : hoofdscherm.getStelling().getHuidigeOrder().getProducten()) {
+                g.fillRect(productCoordinaten[vak.getVakId()][0], productCoordinaten[vak.getVakId()][1], productCoordinaten[vak.getVakId()][2], productCoordinaten[vak.getVakId()][3]);
+            }
+            //--lijnen tsp
+            int productNr = 0;
+            ArrayList<Vak> orderProducten = hoofdscherm.getStelling().getHuidigeOrder().getProducten();
+            for(int i = 0; i<hoofdscherm.getStelling().getHuidigeOrder().getProducten().size();i++){
+                if(productNr==0) {
+                    g.drawLine(robotX, robotY, productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
+                } else{
+                    g.drawLine(productCoordinaten[orderProducten.get(i-1).getVakId()][0], productCoordinaten[orderProducten.get(i-1).getVakId()][1], productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
+                }
+                productNr++;
             }
         }
+        //--voorraad tekenen
+//        for(int i=0; i<25;i++){
+////            if(hoofdscherm.getStelling().getOpslagplekken()[i].isBezet()) {
+////                g.fillRect(productCoordinaten[i][0], productCoordinaten[i][1], productCoordinaten[i][2], productCoordinaten[i][3]);
+////            }
+//        }
+
+        //robot
+        g.setColor(Color.red);
+        g.fillOval(robotX,robotY,robotRadius,robotRadius);
+
     }
 }
