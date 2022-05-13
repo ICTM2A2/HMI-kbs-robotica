@@ -54,9 +54,6 @@ public class Order {
                     dichtsbij = vak;
                 }
             }
-//            else if(vak.getVakId()==20){
-//                dichtsbij=vak;
-//            }
         }
         System.out.println("dichtsbijzijnde vak " + dichtsbij);
         return dichtsbij;
