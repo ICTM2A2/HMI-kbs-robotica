@@ -53,14 +53,16 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         generalPanel.add(scrollbar);
         scrollbar.setVerticalScrollBarPolicy (ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        JTAtext.append("test");
-
         //pakrobot tab content
         pakrobotTekening = new TSPPanel(this);
 
+        //inpakrobot tab content
         inpakrobotPanel.add(new JLabel("test3"));
-        dataPanel.add(new JLabel("test4"));
 
+        //data-panel content
+        dataPanel.add(new JLabel("test4"));
+        
+        //tabladen invoegen
         jTabbedPane.add("general", generalPanel);
         jTabbedPane.add("pakrobot", pakrobotTekening);
         jTabbedPane.add("inpakrobot", inpakrobotPanel);
