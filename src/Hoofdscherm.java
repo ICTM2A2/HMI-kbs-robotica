@@ -61,7 +61,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
 
         //data-panel content
         dataPanel.add(new JLabel("test4"));
-        
+
         //tabladen invoegen
         jTabbedPane.add("general", generalPanel);
         jTabbedPane.add("pakrobot", pakrobotTekening);
