@@ -77,12 +77,16 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         if(e.getSource()==addProductButton){
             OrderDialoogMaken orderDialoogMaken = new OrderDialoogMaken(this);
             pakrobotTekening.repaint();
-            stelling.printOrder();
+            if(stelling.getHuidigeOrder()!=null) {
+                stelling.printOrder();
+            }
         }
         if(e.getSource()==editOrderButton){
             OrderDialoogAanpassen orderDialoogAanpassen = new OrderDialoogAanpassen(this);
             pakrobotTekening.repaint();
-            stelling.printOrder();
+            if(stelling.getHuidigeOrder()!=null) {
+                stelling.printOrder();
+            }
         }
         if(e.getSource()==placeOrderButton){
             stelling.plaatsOrder();

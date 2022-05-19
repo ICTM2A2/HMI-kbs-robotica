@@ -52,8 +52,8 @@ public class TSPPanel extends JPanel {
             {(17*xMax / 20), (17*yMax / 20), (2 * (xMax / 20)), (2 * (yMax / 20))}
         };
         robotRadius=20;
-        robotX = productCoordinaten[20][0];
-        robotY = productCoordinaten[20][1];
+        robotX = productCoordinaten[24][0];
+        robotY = productCoordinaten[24][1];
     }
 
     @Override

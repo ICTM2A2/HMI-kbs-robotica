@@ -58,10 +58,11 @@ public class Order {
                 if(afstand > (afstandX + afstandY)){
                     afstand = afstandX+afstandY;
                     dichtsbij = vak;
+                } else if(afstand == (afstandX + afstandY)){
+                    dichtsbij = vak;
                 }
             }
         }
-        System.out.println("dichtsbijzijnde vak " + dichtsbij);
         return dichtsbij;
     }
 }

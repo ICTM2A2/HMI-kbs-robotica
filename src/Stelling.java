@@ -85,7 +85,7 @@ public class Stelling {
             //product arraycheck
             if (productId >= 0 && productId <= 24) {
                 //er mogen maar drie producten in de order zitten
-                if (huidigeOrder.getProducten().size() < 3) {
+                if (huidigeOrder.getProducten().size() < 4) {
                     //ervoor zorgen dat een product niet meerdere keren toegevoegd kan worden aan de order
                     boolean isBeschikbaar = true;
                     for (Vak vak : huidigeOrder.getProducten()) {
@@ -151,40 +151,89 @@ public class Stelling {
     }
 
     public void sorteerTSP(){
-        if(huidigeOrder.getProducten().size()==2){
+        ArrayList<Vak> producten = huidigeOrder.getProducten();
+        if(producten.size()==2){
             //dichtsbijzijnde product naar eerste plek verplaatsen
-            if(!huidigeOrder.getProducten().get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))) {
+            if(!producten.get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))) {
                 Vak vak1;
-                vak1 = huidigeOrder.getProducten().get(0);
-                huidigeOrder.getProducten().remove(0);
+                vak1 = producten.get(0);
+                producten.remove(0);
                 voegProductToe(vak1.getVakId());
             }
-        } else if (huidigeOrder.getProducten().size()==3){
+        } else if (producten.size()==3){
             //net zo lang de producten doorschuiven totdat het dichtsbijzijnde product op plek 1 staat
-            if(!huidigeOrder.getProducten().get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))){
+            if(!producten.get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))){
                 Vak vak1;
-                vak1 = huidigeOrder.getProducten().get(0);
-                huidigeOrder.getProducten().remove(0);
+                vak1 = producten.get(0);
+                producten.remove(0);
                 voegProductToe(vak1.getVakId());
-                if(!huidigeOrder.getProducten().get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))){
-                    vak1 = huidigeOrder.getProducten().get(0);
-                    huidigeOrder.getProducten().remove(0);
+                if(!producten.get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))){
+                    vak1 = producten.get(0);
+                    producten.remove(0);
                     voegProductToe(vak1.getVakId());
                 }
-                //de tweede en eerste plek omdraaien als de ene dichterbij die op plek 1 is
-                if(!huidigeOrder.getProducten().get(1).equals(huidigeOrder.zoekDichtsbij(huidigeOrder.getProducten().get(0).getxPlek(),huidigeOrder.getProducten().get(0).getyPlek()))){
-                    vak1 = huidigeOrder.getProducten().get(1);
-                    huidigeOrder.getProducten().remove(1);
+                //de tweede en derde plek omdraaien als de ene dichterbij die op plek 1 is
+                if(!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(),producten.get(0).getyPlek()))){
+                    vak1 = producten.get(1);
+                    producten.remove(1);
                     voegProductToe(vak1.getVakId());
                 }
                 //de tweede en eerste plek omdraaien als de ene dichterbij die op plek 1 is, terwijl het product op plek 1 al goed staat
-            } else if(!huidigeOrder.getProducten().get(1).equals(huidigeOrder.zoekDichtsbij(huidigeOrder.getProducten().get(0).getxPlek(),huidigeOrder.getProducten().get(0).getyPlek()))) {
+            } else if(!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(),producten.get(0).getyPlek()))) {
                 Vak vak1;
-                vak1 = huidigeOrder.getProducten().get(1);
-                huidigeOrder.getProducten().remove(1);
+                vak1 = producten.get(1);
+                producten.remove(1);
                 voegProductToe(vak1.getVakId());
             }
+        } else if (producten.size()==4){
+            //net zo lang de producten doorschuiven totdat het dichtsbijzijnde product op plek 1 staat
+            if(!producten.get(0).equals(huidigeOrder.zoekDichtsbij(-1,0))) {
+                Vak vak1;
+                vak1 = producten.get(0);
+                producten.remove(0);
+                voegProductToe(vak1.getVakId());
+                //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
+                if(!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(),producten.get(0).getyPlek()))){
+                    vak1 = producten.get(1);
+                    producten.remove(1);
+                    voegProductToe(vak1.getVakId());
+                }
+                //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
+                if(!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(),producten.get(1).getyPlek()))){
+                    vak1 = producten.get(2);
+                    producten.remove(2);
+                    voegProductToe(vak1.getVakId());
+                }
+            } else if(!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(),producten.get(0).getyPlek()))){
+                //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
+                Vak vak1;
+                vak1 = producten.get(1);
+                producten.remove(1);
+                voegProductToe(vak1.getVakId());
+                //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
+                if(!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(),producten.get(1).getyPlek()))){
+                    vak1 = producten.get(2);
+                    producten.remove(2);
+                    voegProductToe(vak1.getVakId());
+                }
+            } else if(!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(),producten.get(1).getyPlek()))){
+                try {
+                    //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
+                    Vak vak1;
+                    vak1 = producten.get(2);
+                    producten.remove(2);
+                    voegProductToe(vak1.getVakId());
+                } catch (StackOverflowError stackOverflowError){}
+            }
+
+        } else if (producten.size()==5){
+
+
+        } else if (producten.size()==6){
+
         }
+
+
     }
 
     public Vak[] getOpslagplekken() {
