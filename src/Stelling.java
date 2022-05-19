@@ -7,6 +7,7 @@ public class Stelling {
     private Pakrobot pakrobot;
     private Inpakrobot inpakrobot;
     private Order huidigeOrder;
+    private Doos[] dozen;
 
     public Stelling(Hoofdscherm hoofdscherm){
         this.hoofdscherm = hoofdscherm;
@@ -21,6 +22,10 @@ public class Stelling {
             }
         }
         orderlijst = new ArrayList<>();
+        dozen = new Doos[3];
+        for(int i = 0; i<dozen.length; i++){
+            dozen[i]= new Doos(i);
+        }
     }
 
     public void printVakken(){
