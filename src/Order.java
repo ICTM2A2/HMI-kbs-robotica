@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 
 public class Order {
+    private int orderNr;
     private String datum;
     private ArrayList<Vak> producten;
 
-    public Order(){
+    public Order(int orderNr){
         this.datum = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE);
         producten = new ArrayList<>();
+        this.orderNr = orderNr;
+    }
+
+    public String toString(){
+        return "Order: ordernr: " + orderNr + ", datum: " + datum;
     }
 
     public String getDatum() {

@@ -36,8 +36,8 @@ public class Stelling {
     }
 
     public void printOrder(){
-        System.out.println("Order: datum " + huidigeOrder.getDatum());
-        hoofdscherm.schrijfTekst("Order: datum " + huidigeOrder.getDatum());
+        System.out.println(huidigeOrder);
+        hoofdscherm.schrijfTekst(String.valueOf(huidigeOrder));
 
         System.out.println("Producten");
         hoofdscherm.schrijfTekst("Producten");
@@ -54,7 +54,7 @@ public class Stelling {
     }
 
     public void maakOrder(){
-        huidigeOrder = new Order();
+        huidigeOrder = new Order(orderlijst.size());
     }
 
     public void plaatsOrder(){
