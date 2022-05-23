@@ -77,12 +77,18 @@ public class TSPPanel extends JPanel {
         //producten
         //--producten tekenen uit order
         if(hoofdscherm.getStelling().getHuidigeOrder()!=null) {
-            for (Vak vak : hoofdscherm.getStelling().getHuidigeOrder().getProducten()) {
-                g.fillRect(productCoordinaten[vak.getVakId()][0], productCoordinaten[vak.getVakId()][1], productCoordinaten[vak.getVakId()][2], productCoordinaten[vak.getVakId()][3]);
-            }
-            //--lijnen tsp
             int productNr = 0;
             ArrayList<Vak> orderProducten = hoofdscherm.getStelling().getHuidigeOrder().getProducten();
+            for (int i = 0; i<hoofdscherm.getStelling().getHuidigeOrder().getProducten().size();i++) {
+                if (productNr < 3) {
+                    g.fillRect(productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1], productCoordinaten[orderProducten.get(i).getVakId()][2], productCoordinaten[orderProducten.get(i).getVakId()][3]);
+                } else{
+                    g.drawRect(productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1], productCoordinaten[orderProducten.get(i).getVakId()][2], productCoordinaten[orderProducten.get(i).getVakId()][3]);
+                }
+                productNr++;
+            }
+            //--lijnen tsp
+            productNr = 0;
 
             for(int i = 0; i<hoofdscherm.getStelling().getHuidigeOrder().getProducten().size();i++){
                 if(productNr==0) {

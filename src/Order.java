@@ -26,46 +26,50 @@ public class Order {
         return producten;
     }
 
-    public Vak zoekDichtsbij(int x, int y){
+    public Vak zoekDichtsbij(int x, int y, int index){
         Vak dichtsbij = null;
         double afstand=1000;
         int kleinsteX=1000;
         Vak dichtsbijX = null;
-        for(Vak vak: producten){
-            if(!(x==vak.getxPlek() && y==vak.getyPlek())) {
-                int afstandX;
-                if(vak.getxPlek()<kleinsteX){
+        for(int i = index; i< producten.size(); i++){
+            if(!(x==producten.get(i).getxPlek() && y==producten.get(i).getyPlek())) {
+                Vak vak = producten.get(i);
+                int xPlek = vak.getxPlek();
+                int yPlek = vak.getyPlek();
+
+                if(producten.get(i).getxPlek()<kleinsteX){
                     //kleinste x coordinaat berekenen
-                    kleinsteX= vak.getxPlek();
-                    dichtsbijX = vak;
+                    kleinsteX= producten.get(i).getxPlek();
+                    dichtsbijX = producten.get(i);
                 }
-                if (vak.getxPlek() > x) {
+                int afstandX=0;
+                //afstand in een positief getal omzetten
+                if (xPlek > x) {
                     //product zit rechts
-                    afstandX = vak.getxPlek() - x;
-                } else if (vak.getxPlek() < x) {
+                    afstandX = xPlek - x;
+                } else if (xPlek < x) {
                     //product zit links
-                    afstandX = x- vak.getxPlek();
+                    afstandX = x- xPlek;
                 } else {
                     //product zit op hetzelfde x-niveau
-                    afstandX=0;
                 }
-                int afstandY;
-                if (vak.getyPlek() >y) {
+                int afstandY=0;
+                if (yPlek >y) {
                     //product zit boven
-                    afstandY= vak.getyPlek()-y;
+                    afstandY= yPlek-y;
 
-                } else if (vak.getyPlek() < y) {
+                } else if (yPlek < y) {
                     //product zit onder
-                    afstandY = y - vak.getyPlek();
+                    afstandY = y - yPlek;
 
                 } else {
                     //product zit op hetzelfde y-niveau
-                    afstandY=0;
                 }
-                if(afstand > (afstandX + afstandY)){
-                    afstand = Math.sqrt((afstandX*afstandX)+(afstandY*afstandY));
+                double afstandPyth = Math.sqrt((afstandX*afstandX)+(afstandY*afstandY));
+                if(afstand > afstandPyth){
+                    afstand = afstandPyth;
                     dichtsbij = vak;
-                } else if(afstand == (afstandX + afstandY)){
+                } else if(afstand == afstandPyth){
                     dichtsbij = dichtsbijX;
                 }
             }

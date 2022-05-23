@@ -1,2 +1,4 @@
-public class BPPPanel {
+import javax.swing.*;
+
+public class BPPPanel extends JPanel {
 }
