@@ -28,10 +28,17 @@ public class Order {
 
     public Vak zoekDichtsbij(int x, int y){
         Vak dichtsbij = null;
-        int afstand=1000;
+        double afstand=1000;
+        int kleinsteX=1000;
+        Vak dichtsbijX = null;
         for(Vak vak: producten){
             if(!(x==vak.getxPlek() && y==vak.getyPlek())) {
                 int afstandX;
+                if(vak.getxPlek()<kleinsteX){
+                    //kleinste x coordinaat berekenen
+                    kleinsteX= vak.getxPlek();
+                    dichtsbijX = vak;
+                }
                 if (vak.getxPlek() > x) {
                     //product zit rechts
                     afstandX = vak.getxPlek() - x;
@@ -56,10 +63,10 @@ public class Order {
                     afstandY=0;
                 }
                 if(afstand > (afstandX + afstandY)){
-                    afstand = afstandX+afstandY;
+                    afstand = Math.sqrt((afstandX*afstandX)+(afstandY*afstandY));
                     dichtsbij = vak;
                 } else if(afstand == (afstandX + afstandY)){
-                    dichtsbij = vak;
+                    dichtsbij = dichtsbijX;
                 }
             }
         }

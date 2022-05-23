@@ -84,17 +84,20 @@ public class TSPPanel extends JPanel {
             int productNr = 0;
             ArrayList<Vak> orderProducten = hoofdscherm.getStelling().getHuidigeOrder().getProducten();
 
-
-
             for(int i = 0; i<hoofdscherm.getStelling().getHuidigeOrder().getProducten().size();i++){
                 if(productNr==0) {
                     g.drawLine(robotX, robotY, productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
-                } else{
+                } else if(productNr>0 && productNr<3){
+                    g.drawLine(productCoordinaten[orderProducten.get(i-1).getVakId()][0], productCoordinaten[orderProducten.get(i-1).getVakId()][1], productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
+                } else if(productNr==3) {
+                    g.drawLine(robotX, robotY, productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
+                } else if(productNr>3){
                     g.drawLine(productCoordinaten[orderProducten.get(i-1).getVakId()][0], productCoordinaten[orderProducten.get(i-1).getVakId()][1], productCoordinaten[orderProducten.get(i).getVakId()][0], productCoordinaten[orderProducten.get(i).getVakId()][1]);
                 }
                 productNr++;
             }
         }
+
         //--voorraad tekenen
 //        for(int i=0; i<25;i++){
 ////            if(hoofdscherm.getStelling().getOpslagplekken()[i].isBezet()) {
