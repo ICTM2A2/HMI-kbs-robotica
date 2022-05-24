@@ -25,7 +25,6 @@ public class Vak {
 
     public void setEmpty(){
         this.isBezet = false;
-        this.product = null;
     }
 
     public int getVakId() {

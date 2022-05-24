@@ -28,6 +28,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     private JLabel orderLabel;
     private JTable voorraadTabel;
     private JTable orderTabel;
+    private JScrollPane colomNamen;
 
     //applicatie content
     private Stelling stelling;
@@ -61,16 +62,15 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         pakrobotTekening = new TSPPanel(this);
 
         //inpakrobot tab content
+        inpakrobotTekening=new BPPPanel();
         inpakrobotTekening.add(new JLabel("test3"));
 
         //data-panel content
         dataPanel.setLayout(new FlowLayout());
-        orderLabel = new JLabel("Order: " + getStelling().getHuidigeOrder());
-        dataPanel.add(orderLabel);
         dataPanel.add(new JLabel("Voorraad:"));
 
         //voorraadtabel array maken
-        String[] voorraadKolommen = {"ProductId", "Voorraad", "gewicht", "X", "Y"};
+        String[] voorraadKolommen = {"ProductId", "Voorraad", "Gewicht", "X", "Y"};
         String[][] voorraadData = new String[25][5];
 
         //voorraadtabel array invullen
@@ -93,26 +93,28 @@ public class Hoofdscherm extends JFrame implements ActionListener {
             voorraadData[productNr][4] = String.valueOf(vak.getyPlek());
         }
         //ordertabel
-        if (getStelling().getHuidigeOrder() != null) {
-            String[] orderKolommen = {"ProductId", "Gewicht", "X", "Y"};
-            String[][] orderData = new String[getStelling().getHuidigeOrder().getProducten().size()][4];
-            int i =0;
-            for (Vak vak : getStelling().getHuidigeOrder().getProducten()) {
-                orderData[i][0] = String.valueOf(vak.getVakId());
-                orderData[i][1] = String.valueOf(vak.getProduct().getGewicht());
-                orderData[i][2] = String.valueOf(vak.getxPlek());
-                orderData[i][3] = String.valueOf(vak.getyPlek());
-                i++;
-            }
-            orderTabel = new JTable(orderData, orderKolommen);
-            orderTabel.setDefaultEditor(Object.class, null);
-            orderTabel.setCellSelectionEnabled(false);
-            dataPanel.add(orderTabel);
-        }
+//        if (getStelling().getHuidigeOrder() != null) {
+//            String[] orderKolommen = {"ProductId", "Gewicht", "X", "Y"};
+//            String[][] orderData = new String[getStelling().getHuidigeOrder().getProducten().size()][4];
+//            int i =0;
+//            for (Vak vak : getStelling().getHuidigeOrder().getProducten()) {
+//                orderData[i][0] = String.valueOf(vak.getVakId());
+//                orderData[i][1] = String.valueOf(vak.getProduct().getGewicht());
+//                orderData[i][2] = String.valueOf(vak.getxPlek());
+//                orderData[i][3] = String.valueOf(vak.getyPlek());
+//                i++;
+//            }
+//            orderTabel = new JTable(orderData, orderKolommen);
+//            orderTabel.setDefaultEditor(Object.class, null);
+//            orderTabel.setCellSelectionEnabled(false);
+//            dataPanel.add(orderTabel);
+//        }
         voorraadTabel = new JTable(voorraadData, voorraadKolommen);
         voorraadTabel.setDefaultEditor(Object.class, null);
         voorraadTabel.setCellSelectionEnabled(false);
         dataPanel.add(voorraadTabel);
+        colomNamen = new JScrollPane(voorraadTabel);
+        dataPanel.add(colomNamen);
 
 
         //tabladen invoegen
@@ -143,6 +145,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         }
         if (e.getSource() == placeOrderButton) {
             stelling.plaatsOrder();
+            refreshTabel();
         }
     }
 
@@ -157,5 +160,40 @@ public class Hoofdscherm extends JFrame implements ActionListener {
 
     public TSPPanel getPakrobotTekening() {
         return pakrobotTekening;
+    }
+
+    public void refreshTabel(){
+        dataPanel.remove(voorraadTabel);
+        dataPanel.remove(colomNamen);
+        //voorraadtabel array maken
+        String[] voorraadKolommen = {"ProductId", "Voorraad", "gewicht", "X", "Y"};
+        String[][] voorraadData = new String[25][5];
+
+        //voorraadtabel array invullen
+        for (Vak vak : getStelling().getOpslagplekken()) {
+            String voorraadstatus;
+            int productNr;
+            double gewicht;
+
+            if (vak.isBezet()) {
+                voorraadstatus = "op voorraad";
+            } else {
+                voorraadstatus = "uitverkocht";
+            }
+            productNr = vak.getVakId();
+            gewicht = vak.getProduct().getGewicht();
+            voorraadData[productNr][0] = String.valueOf(productNr);
+            voorraadData[productNr][1] = voorraadstatus;
+            voorraadData[productNr][2] = String.valueOf(gewicht);
+            voorraadData[productNr][3] = String.valueOf(vak.getxPlek());
+            voorraadData[productNr][4] = String.valueOf(vak.getyPlek());
+        }
+        voorraadTabel = new JTable(voorraadData, voorraadKolommen);
+        colomNamen = new JScrollPane(voorraadTabel);
+        voorraadTabel.revalidate();
+        voorraadTabel.setDefaultEditor(Object.class, null);
+        voorraadTabel.setCellSelectionEnabled(false);
+        dataPanel.add(voorraadTabel);
+        dataPanel.add(colomNamen);
     }
 }
