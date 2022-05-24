@@ -7,7 +7,7 @@ public class Stelling {
     private Pakrobot pakrobot;
     private Inpakrobot inpakrobot;
     private Order huidigeOrder;
-    private Doos[] dozen;
+    private ArrayList<Doos> dozen;
 
     public Stelling(Hoofdscherm hoofdscherm) {
         this.hoofdscherm = hoofdscherm;
@@ -22,9 +22,9 @@ public class Stelling {
             }
         }
         orderlijst = new ArrayList<>();
-        dozen = new Doos[3];
-        for (int i = 0; i < dozen.length; i++) {
-            dozen[i] = new Doos(i);
+        dozen = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            dozen.add(new Doos(i));
         }
     }
 
@@ -100,6 +100,7 @@ public class Stelling {
                         huidigeOrder.getProducten().add(opslagplekken[productId]);
                         //TSP algoritme --> producten sorteren om het pad te bepalen
                         sorteerTSP();
+                        //BPP algoritme --> producten in de beste doos plaatsen
 
                     } else {
                         //product niet toevoegen --> zit al in order
@@ -356,6 +357,23 @@ public class Stelling {
         }
 
 
+    }
+
+    public Doos zoekBestFit(Product product){
+        double gewicht = product.getGewicht();
+        double kleinsteRuimte=1000;
+        Doos kleinsteDoos = null;
+        for (Doos doos: dozen){
+            double doosInhoud = doos.getInhoud();
+            if (doosInhoud>gewicht){
+                if(doosInhoud<kleinsteRuimte){
+                    kleinsteRuimte=doosInhoud;
+                    kleinsteDoos=doos;
+                }
+            }
+
+        }
+        return kleinsteDoos;
     }
 
     public Vak[] getOpslagplekken() {
