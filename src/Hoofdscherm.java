@@ -62,8 +62,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         pakrobotTekening = new TSPPanel(this);
 
         //inpakrobot tab content
-        inpakrobotTekening=new BPPPanel();
-        inpakrobotTekening.add(new JLabel("test3"));
+        inpakrobotTekening=new BPPPanel(this);
 
         //data-panel content
         dataPanel.setLayout(new FlowLayout());
