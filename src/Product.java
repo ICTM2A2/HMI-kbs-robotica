@@ -4,11 +4,11 @@ public class Product {
 
     public Product(int productId){
         this.productId = productId;
-        double getal = Math.floor(Math.random()*3);
+        double getal = Math.floor(Math.random()*2);
         if (getal==0.0){
-            gewicht = 60;
-        } else {
             gewicht = 30;
+        } else {
+            gewicht = 20;
         }
     }
 

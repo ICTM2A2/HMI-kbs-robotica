@@ -7,10 +7,12 @@ public class Order {
     private int orderNr;
     private String datum;
     private ArrayList<Vak> producten;
+    private ArrayList<Doos> doosVolgorde;
 
     public Order(int orderNr){
         this.datum = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE);
         producten = new ArrayList<>();
+        doosVolgorde = new ArrayList<>();
         this.orderNr = orderNr;
     }
 
@@ -75,5 +77,13 @@ public class Order {
             }
         }
         return dichtsbij;
+    }
+
+    public void setDoosVolgorde(ArrayList<Doos> doosVolgorde) {
+        this.doosVolgorde = doosVolgorde;
+    }
+
+    public ArrayList<Doos> getDoosVolgorde() {
+        return doosVolgorde;
     }
 }

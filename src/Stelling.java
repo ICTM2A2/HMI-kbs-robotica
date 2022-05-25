@@ -42,9 +42,11 @@ public class Stelling {
         System.out.println("Producten");
         hoofdscherm.schrijfTekst("Producten");
         if (huidigeOrder.getProducten().size() > 0) {
+            int i = 0;
             for (Vak vak : huidigeOrder.getProducten()) {
-                System.out.println("-- " + vak);
+                System.out.println("-- " + vak + " gaat in doos:" + huidigeOrder.getDoosVolgorde().get(i));
                 hoofdscherm.schrijfTekst("-- " + vak);
+                i++;
             }
         } else {
             System.out.println("--Uw order is nog leeg!");
@@ -101,7 +103,7 @@ public class Stelling {
                         //TSP algoritme --> producten sorteren om het pad te bepalen
                         sorteerTSP();
                         //BPP algoritme --> producten in de beste doos plaatsen
-
+                        sorteerBPP();
                     } else {
                         //product niet toevoegen --> zit al in order
                         System.out.println("product " + productId + " zit al in je order!");
@@ -134,6 +136,7 @@ public class Stelling {
                         System.out.println("product " + productId + " is verwijderd uit uw order");
                         hoofdscherm.schrijfTekst("product " + productId + " is verwijderd uit uw order");
                         sorteerTSP();
+                        sorteerBPP();
                     }
                 }
                 if (!isVerwijderd) {
@@ -151,11 +154,12 @@ public class Stelling {
         hoofdscherm.schrijfTekst("\n");
     }
 
+    //tsp functies
     public void sorteerTSP() {
         ArrayList<Vak> producten = huidigeOrder.getProducten();
         if (producten.size() == 2) {
             //dichtsbijzijnde product naar eerste plek verplaatsen
-            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0,0))) {
+            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0, 0))) {
                 vervangTSP(0);
             }
         } else if (producten.size() == 3) {
@@ -163,33 +167,33 @@ public class Stelling {
             if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0, 0))) {
                 vervangTSP(0);
                 //de tweede en derde plek omdraaien als de ene dichterbij die op plek 1 is
-                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                     vervangTSP(1);
                 }
                 //de tweede en eerste plek omdraaien als de ene dichterbij die op plek 1 is, terwijl het product op plek 1 al goed staat
-            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                 vervangTSP(1);
             }
         } else if (producten.size() == 4) {
             //net zo lang de producten doorschuiven totdat het dichtsbijzijnde product op plek 1 staat
-            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0,0))) {
+            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0, 0))) {
                 vervangTSP(0);
                 //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
-                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                     vervangTSP(1);
                 }
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
-                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                     vervangTSP(2);
                 }
-            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                 //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
                 vervangTSP(1);
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
-                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                     vervangTSP(2);
                 }
-            } else if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+            } else if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                 try {
                     //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
                     vervangTSP(2);
@@ -199,84 +203,84 @@ public class Stelling {
 
         } else if (producten.size() == 5) {
             //net zo lang de producten doorschuiven totdat het dichtsbijzijnde product op plek 1 staat
-            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0,0))) {
+            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0, 0))) {
                 vervangTSP(0);
                 //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
-                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                     vervangTSP(1);
                 }
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is
-                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                     vervangTSP(2);
                 }
                 //het dichtsbijzijnde product tov product 3 op plek 4 zetten als dat nog niet zo is, plek 5 staat dan ook goed
-                if(!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(),2))){
+                if (!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(), 2))) {
                     vervangTSP(3);
                 }
-            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                 //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
                 vervangTSP(1);
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
-                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                     vervangTSP(2);
                 }
                 //het dichtsbijzijnde product tov product 3 op plek 4 zetten als dat nog niet zo is, plek 5 staat dan ook goed
-                if(!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(),2))){
+                if (!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(), 2))) {
                     vervangTSP(3);
                 }
-            } else if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+            } else if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is
                 vervangTSP(2);
                 //het dichtsbijzijnde product tov product 3 op plek 4 zetten, plek 5 staat dan goed
-                if(!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(),2))){
+                if (!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(), 2))) {
                     vervangTSP(3);
                 }
             }
 
         } else if (producten.size() == 6) {
             //net zo lang de producten doorschuiven totdat het dichtsbijzijnde product op plek 1 staat
-            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0,0))) {
+            if (!producten.get(0).equals(huidigeOrder.zoekDichtsbij(5, 0, 0))) {
                 vervangTSP(0);
                 //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
-                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+                if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                     vervangTSP(1);
                 }
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is
-                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                     vervangTSP(2);
                 }
                 //het dichtsbijzijnde product tov product 3 op plek 4 zetten als dat nog niet zo is
-                if(!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(),2))){
+                if (!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(), 2))) {
                     vervangTSP(3);
                 }
                 //het dichtsbijzijnde product tov product 4 op plek 5 zetten als dat nog niet zo is, plek 6 staat dan ook goed
-                if(!producten.get(4).equals(huidigeOrder.zoekDichtsbij(producten.get(3).getxPlek(), producten.get(3).getyPlek(),3))){
+                if (!producten.get(4).equals(huidigeOrder.zoekDichtsbij(producten.get(3).getxPlek(), producten.get(3).getyPlek(), 3))) {
                     vervangTSP(4);
                 }
-            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(),0))) {
+            } else if (!producten.get(1).equals(huidigeOrder.zoekDichtsbij(producten.get(0).getxPlek(), producten.get(0).getyPlek(), 0))) {
                 //het dichtsbijzijnde product tov product 1 op plek 2 zetten als dat nog niet zo is
                 vervangTSP(1);
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is, plek 4 staat dan automatisch ook goed
-                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+                if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                     vervangTSP(2);
                 }
                 //het dichtsbijzijnde product tov product 3 op plek 4 zetten als dat nog niet zo is
-                if(!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(),2))){
+                if (!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(), 2))) {
                     vervangTSP(3);
                 }
                 //het dichtsbijzijnde product tov product 4 op plek 5 zetten als dat nog niet zo is, plek 6 staat dan ook goed
-                if(!producten.get(4).equals(huidigeOrder.zoekDichtsbij(producten.get(3).getxPlek(), producten.get(3).getyPlek(),3))){
+                if (!producten.get(4).equals(huidigeOrder.zoekDichtsbij(producten.get(3).getxPlek(), producten.get(3).getyPlek(), 3))) {
                     vervangTSP(4);
                 }
-            } else if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(),1))) {
+            } else if (!producten.get(2).equals(huidigeOrder.zoekDichtsbij(producten.get(1).getxPlek(), producten.get(1).getyPlek(), 1))) {
                 //het dichtsbijzijnde product tov product 2 op plek 3 zetten als dat nog niet zo is
                 vervangTSP(2);
                 //het dichtsbijzijnde product tov product 3 op plek 4 zetten
-                if(!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(),2))){
+                if (!producten.get(3).equals(huidigeOrder.zoekDichtsbij(producten.get(2).getxPlek(), producten.get(2).getyPlek(), 2))) {
                     vervangTSP(3);
                 }
                 //het dichtsbijzijnde product tov product 4 op plek 5 zetten als dat nog niet zo is, plek 6 staat dan ook goed
-                if(!producten.get(4).equals(huidigeOrder.zoekDichtsbij(producten.get(3).getxPlek(), producten.get(3).getyPlek(),3))){
+                if (!producten.get(4).equals(huidigeOrder.zoekDichtsbij(producten.get(3).getxPlek(), producten.get(3).getyPlek(), 3))) {
                     vervangTSP(4);
                 }
             }
@@ -285,24 +289,7 @@ public class Stelling {
 
     }
 
-//    public Doos zoekBestFit(Product product){
-//        double gewicht = product.getGewicht();
-//        double kleinsteRuimte=1000;
-//        Doos kleinsteDoos = null;
-//        for (Doos doos: dozen){
-//            double doosInhoud = doos.getInhoud();
-//            if (doosInhoud>gewicht){
-//                if(doosInhoud<kleinsteRuimte){
-//                    kleinsteRuimte=doosInhoud;
-//                    kleinsteDoos=doos;
-//                }
-//            }
-//
-//        }
-//        return kleinsteDoos;
-//    }
-
-    public void vervangTSP(int nummer){
+    public void vervangTSP(int nummer) {
         ArrayList<Vak> producten = huidigeOrder.getProducten();
         //product uit order halen en er weer terug in stoppen
         Vak vak1;
@@ -311,11 +298,60 @@ public class Stelling {
         voegProductToe(vak1.getVakId());
     }
 
+    //BPP functies
+    public Doos zoekBestFit(Product product) {
+        double gewicht = product.getGewicht();
+        double kleinsteVerschil = 1000;
+        Doos besteDoos = null;
+        int doosVol = 0;
+        for (Doos doos : dozen) {
+            double verschil;
+            if (doos.getVoorInhoud() >= gewicht) {
+                verschil = doos.getVoorInhoud() - gewicht;
+                if (verschil < kleinsteVerschil) {
+                    System.out.println("verschil = " + verschil);
+                    kleinsteVerschil = verschil;
+                    besteDoos = doos;
+                }
+            } else {
+                doosVol++;
+                if (doosVol == 2) {
+                    //1 doos vervangen en opnieuw de functie ingaan als dat is gebeurd
+                    return null;
+                }
+            }
+
+        }
+        return besteDoos;
+    }
+
+    public void sorteerBPP() {
+        for(Doos doos: dozen){
+            doos.resetInhoud();
+        }
+
+        ArrayList<Doos> doosVolgorde = new ArrayList<>();
+        int i = 0;
+        for(Vak vak: huidigeOrder.getProducten()){
+            Doos doos = zoekBestFit(vak.getProduct());
+            doosVolgorde.add(doos);
+            doos.pakProductIn(vak.getProduct());
+            i++;
+        }
+        huidigeOrder.setDoosVolgorde(doosVolgorde);
+    }
+
+
+    //getters en setters
     public Vak[] getOpslagplekken() {
         return opslagplekken;
     }
 
     public Order getHuidigeOrder() {
         return huidigeOrder;
+    }
+
+    public ArrayList<Doos> getDozen() {
+        return dozen;
     }
 }
