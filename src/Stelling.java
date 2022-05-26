@@ -1,13 +1,16 @@
 import java.util.ArrayList;
 
 public class Stelling {
-    private Hoofdscherm hoofdscherm;
-    private Vak[] opslagplekken;
-    private ArrayList<Order> orderlijst;
-    private Pakrobot pakrobot;
-    private Inpakrobot inpakrobot;
-    private Order huidigeOrder;
-    private ArrayList<Doos> dozen;
+    private Hoofdscherm hoofdscherm; //GUI
+    private Vak[] opslagplekken; //houd de voorraad bij
+    private ArrayList<Order> orderlijst; //geschiedenis van orders (oud->nieuw)
+    private Pakrobot pakrobot; //communicatie pakrobot
+    private Inpakrobot inpakrobot; //communicatie inpakrobot
+    private Order huidigeOrder; //actieve order
+    private ArrayList<Doos> dozen; //dozen
+    private ArrayList<Doos> ingepakteDozen; //geschiedenis van ingepakte dozen
+    private int aantalDozen;//max aantal dozen per order
+    private boolean bezigMetOrder; //wanneer er een order wordt geplaatst en de robots zijn bezig, moet er niet op een knop gedrukt kunnen worden
 
     public Stelling(Hoofdscherm hoofdscherm) {
         this.hoofdscherm = hoofdscherm;
@@ -22,8 +25,10 @@ public class Stelling {
             }
         }
         orderlijst = new ArrayList<>();
+        ingepakteDozen = new ArrayList<>();
         dozen = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        aantalDozen = 2;
+        for (int i = 0; i < aantalDozen; i++) {
             dozen.add(new Doos(i));
         }
     }
@@ -61,7 +66,9 @@ public class Stelling {
 
     public void plaatsOrder() {
         if (huidigeOrder != null && huidigeOrder.getProducten().size() > 0) {
+            hoofdscherm.schrijfTekst("order "+huidigeOrder.getOrderNr()+" is geplaatst!");
             //robotacties->
+            bezigMetOrder=true;
 
             //order in de lijst plaatsen
             orderlijst.add(huidigeOrder);
@@ -71,7 +78,15 @@ public class Stelling {
             }
             //order verwijderen uit actieve positie
             huidigeOrder = null;
-            hoofdscherm.schrijfTekst("uw order is geplaatst!");
+            for (int i = aantalDozen; i < aantalDozen*2; i++) {
+                dozen.add(new Doos(i));
+            }
+            for(int i = 0; i<dozen.size(); i++){
+                ingepakteDozen.add(dozen.get(i));
+                dozen.remove(0);
+            }
+
+            bezigMetOrder=false;
         } else {
             System.out.println("uw order is nog leeg!");
             hoofdscherm.schrijfTekst("uw order is nog leeg!");
@@ -353,5 +368,9 @@ public class Stelling {
 
     public ArrayList<Doos> getDozen() {
         return dozen;
+    }
+
+    public boolean isBezigMetOrder() {
+        return bezigMetOrder;
     }
 }

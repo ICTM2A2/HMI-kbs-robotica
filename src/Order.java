@@ -86,4 +86,8 @@ public class Order {
     public ArrayList<Doos> getDoosVolgorde() {
         return doosVolgorde;
     }
+
+    public int getOrderNr() {
+        return orderNr;
+    }
 }

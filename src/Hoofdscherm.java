@@ -91,7 +91,17 @@ public class Hoofdscherm extends JFrame implements ActionListener {
             voorraadData[productNr][3] = String.valueOf(vak.getxPlek());
             voorraadData[productNr][4] = String.valueOf(vak.getyPlek());
         }
-        //ordertabel
+        voorraadTabel = new JTable(voorraadData, voorraadKolommen);
+        voorraadTabel.setDefaultEditor(Object.class, null);
+        voorraadTabel.setCellSelectionEnabled(false);
+        dataPanel.add(voorraadTabel);
+        colomNamen = new JScrollPane(voorraadTabel);
+        dataPanel.add(colomNamen);
+
+//        //ordertabel
+//        String[] orderKolommen = {"OrderId", "Datum",};
+//        String[][] orderData = new String[25][2];
+//
 //        if (getStelling().getHuidigeOrder() != null) {
 //            String[] orderKolommen = {"ProductId", "Gewicht", "X", "Y"};
 //            String[][] orderData = new String[getStelling().getHuidigeOrder().getProducten().size()][4];
@@ -108,12 +118,6 @@ public class Hoofdscherm extends JFrame implements ActionListener {
 //            orderTabel.setCellSelectionEnabled(false);
 //            dataPanel.add(orderTabel);
 //        }
-        voorraadTabel = new JTable(voorraadData, voorraadKolommen);
-        voorraadTabel.setDefaultEditor(Object.class, null);
-        voorraadTabel.setCellSelectionEnabled(false);
-        dataPanel.add(voorraadTabel);
-        colomNamen = new JScrollPane(voorraadTabel);
-        dataPanel.add(colomNamen);
 
 
         //tabladen invoegen
@@ -128,23 +132,25 @@ public class Hoofdscherm extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == addProductButton) {
-            OrderDialoogMaken orderDialoogMaken = new OrderDialoogMaken(this);
-            repaint();
-            if (stelling.getHuidigeOrder() != null) {
-                stelling.printOrder();
+        if (!getStelling().isBezigMetOrder()) {
+            if (e.getSource() == addProductButton) {
+                OrderDialoogMaken orderDialoogMaken = new OrderDialoogMaken(this);
+                repaint();
+                if (stelling.getHuidigeOrder() != null) {
+                    stelling.printOrder();
+                }
             }
-        }
-        if (e.getSource() == editOrderButton) {
-            OrderDialoogAanpassen orderDialoogAanpassen = new OrderDialoogAanpassen(this);
-            repaint();
-            if (stelling.getHuidigeOrder() != null) {
-                stelling.printOrder();
+            if (e.getSource() == editOrderButton) {
+                OrderDialoogAanpassen orderDialoogAanpassen = new OrderDialoogAanpassen(this);
+                repaint();
+                if (stelling.getHuidigeOrder() != null) {
+                    stelling.printOrder();
+                }
             }
-        }
-        if (e.getSource() == placeOrderButton) {
-            stelling.plaatsOrder();
-            refreshTabel();
+            if (e.getSource() == placeOrderButton) {
+                stelling.plaatsOrder();
+                refreshTabel();
+            }
         }
     }
 

@@ -125,6 +125,5 @@ public class BPPPanel extends JPanel {
         g.drawLine(x1, y1, x2, y2);
         g.fillPolygon(xpoints, ypoints, 3);
 
-        
     }
 }
