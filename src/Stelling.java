@@ -45,6 +45,7 @@ public class Stelling {
 
     public void printOrder() {
         System.out.println(huidigeOrder);
+        hoofdscherm.leegTekst();
         hoofdscherm.schrijfTekst(String.valueOf(huidigeOrder));
 
         System.out.println("Producten");
@@ -78,27 +79,42 @@ public class Stelling {
             //robotacties->
             bezigMetOrder = true;
 
-            hoofdscherm.setTabblad(1);
             hoofdscherm.repaint();
 
             ArrayList<Vak> av = new ArrayList<>(huidigeOrder.getProducten());
             ArrayList<Doos> ad = new ArrayList<>(huidigeOrder.getDoosVolgorde());
 
+            String backlog = "";
             for (Vak v : av) {
-                pakrobot.verstuurCoord(v.getxPlek() + "," + v.getyPlek(), av.size());
+                String coord = v.getxPlek() + "," + v.getyPlek() + ",";
 
                 Doos d = ad.get(av.indexOf(v));
+                Doos d2;
 
-                if(d.getDoosId() % 2 == 0) {
-                    inpakrobot.verstuurRichting("l");
-                } else {
-                    inpakrobot.verstuurRichting("r");
+                try{
+                    d2 = ad.get(av.indexOf(v) + 1);
+                } catch (Exception ex) {
+                    d2 = null;
                 }
 
-                volgendeProduct();
-            }
+                backlog += coord;
 
-            inpakrobot.verstuurRichting("s");
+                if(d2 != null && d.getDoosId() == d2.getDoosId()) {
+                    ;
+                } else {
+                    pakrobot.verstuurCoord(backlog, av.size());
+
+                    if(d.getDoosId() % 2 == 0) {
+                        inpakrobot.verstuurRichting("l");
+                    } else {
+                        inpakrobot.verstuurRichting("r");
+                    }
+
+                    backlog = "";
+                }
+
+//                volgendeProduct();
+            }
 
             // x,y,x,y,x,y,x,y,x,y,x,y String maken om naar de pakrobot toe te sturen
             //pakrobot.verstuurCoord(maakCoordString());

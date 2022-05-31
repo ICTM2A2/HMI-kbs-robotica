@@ -148,7 +148,6 @@ public class Hoofdscherm extends JFrame implements ActionListener {
                 }
             }
             if (e.getSource() == placeOrderButton) {
-                setTabblad(1);
                 stelling.plaatsOrder();
                 refreshTabel();
             }
@@ -162,6 +161,11 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     public void schrijfTekst(String text) {
         JTAtext.append("\n" + text);
         JTAtext.setCaretPosition(JTAtext.getDocument().getLength());
+    }
+
+    public void leegTekst() {
+        JTAtext.selectAll();
+        JTAtext.replaceSelection("");
     }
 
     public TSPPanel getPakrobotTekening() {
