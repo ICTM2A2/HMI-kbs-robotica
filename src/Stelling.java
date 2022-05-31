@@ -31,6 +31,9 @@ public class Stelling {
         for (int i = 0; i < aantalDozen; i++) {
             dozen.add(new Doos(i));
         }
+
+        pakrobot = new Pakrobot();
+        inpakrobot = new Inpakrobot();
     }
 
     public void printVakken() {
@@ -64,11 +67,45 @@ public class Stelling {
         huidigeOrder = new Order(orderlijst.size());
     }
 
+    public void volgendeProduct() {
+//        huidigeOrder.getProducten().remove(0);
+//        hoofdscherm.repaint();
+    }
+
     public void plaatsOrder() {
         if (huidigeOrder != null && huidigeOrder.getProducten().size() > 0) {
-            hoofdscherm.schrijfTekst("order "+huidigeOrder.getOrderNr()+" is geplaatst!");
+            hoofdscherm.schrijfTekst("order " + huidigeOrder.getOrderNr() + " is geplaatst!");
             //robotacties->
-            bezigMetOrder=true;
+            bezigMetOrder = true;
+
+            hoofdscherm.setTabblad(1);
+            hoofdscherm.repaint();
+
+            ArrayList<Vak> av = new ArrayList<>(huidigeOrder.getProducten());
+            ArrayList<Doos> ad = new ArrayList<>(huidigeOrder.getDoosVolgorde());
+
+            for (Vak v : av) {
+                pakrobot.verstuurCoord(v.getxPlek() + "," + v.getyPlek(), av.size());
+
+                Doos d = ad.get(av.indexOf(v));
+
+                if(d.getDoosId() % 2 == 0) {
+                    inpakrobot.verstuurRichting("l");
+                } else {
+                    inpakrobot.verstuurRichting("r");
+                }
+
+                volgendeProduct();
+            }
+
+            inpakrobot.verstuurRichting("s");
+
+            // x,y,x,y,x,y,x,y,x,y,x,y String maken om naar de pakrobot toe te sturen
+            //pakrobot.verstuurCoord(maakCoordString());
+
+            //r,l,r,l,r,l String maken om naar de inpakrobot te sturen
+            //inpakrobot.verstuurRichting(maakDozenString());
+            //System.out.println(maakDozenString());
 
             //order in de lijst plaatsen
             orderlijst.add(huidigeOrder);
@@ -78,20 +115,38 @@ public class Stelling {
             }
             //order verwijderen uit actieve positie
             huidigeOrder = null;
-            for (int i = aantalDozen; i < aantalDozen*2; i++) {
+            for (int i = aantalDozen; i < aantalDozen * 2; i++) {
                 dozen.add(new Doos(i));
             }
-            for(int i = 0; i<dozen.size(); i++){
+            for (int i = 0; i < dozen.size(); i++) {
                 ingepakteDozen.add(dozen.get(i));
                 dozen.remove(0);
             }
 
-            bezigMetOrder=false;
+            bezigMetOrder = false;
         } else {
             System.out.println("uw order is nog leeg!");
             hoofdscherm.schrijfTekst("uw order is nog leeg!");
         }
         hoofdscherm.schrijfTekst("\n");
+    }
+
+    public String maakCoordString() {
+        StringBuilder coord = new StringBuilder();
+        int i = 0;
+        for (Vak vak : huidigeOrder.getProducten()) {
+            String coordX = String.valueOf(vak.getxPlek());
+            String coordY = String.valueOf(vak.getyPlek());
+            if (i == 0) {
+                coord.append(coordX).append(",");
+            } else {
+                coord.append(",").append(coordX).append(",");
+            }
+            coord.append(coordY);
+            i++;
+        }
+        System.out.println(coord);
+        return coord.toString();
     }
 
     public void voegProductToe(int productId) {
@@ -159,14 +214,15 @@ public class Stelling {
                     hoofdscherm.schrijfTekst("product" + productId + " zit niet in uw order en kan dus niet verwijderd worden");
                 }
             } else {
-                System.out.println("product " + productId + " staat niet in de stelling");
-                hoofdscherm.schrijfTekst("product " + productId + " staat niet in de stelling");
+                System.out.println("product " + productId + " staat niet in de stelling, getal moet tussen 0 en 24 zijn");
+                hoofdscherm.schrijfTekst("product " + productId + " staat niet in de stelling, getal moet tussen 0 en 24 zijn");
             }
         } else {
             System.out.println("voeg eerst producten toe");
             hoofdscherm.schrijfTekst("voeg eerst producten toe");
         }
         hoofdscherm.schrijfTekst("\n");
+
     }
 
     //tsp functies
@@ -341,19 +397,36 @@ public class Stelling {
     }
 
     public void sorteerBPP() {
-        for(Doos doos: dozen){
+        for (Doos doos : dozen) {
             doos.resetInhoud();
         }
 
         ArrayList<Doos> doosVolgorde = new ArrayList<>();
         int i = 0;
-        for(Vak vak: huidigeOrder.getProducten()){
+        for (Vak vak : huidigeOrder.getProducten()) {
             Doos doos = zoekBestFit(vak.getProduct());
             doosVolgorde.add(doos);
             doos.pakProductIn(vak.getProduct());
             i++;
         }
         huidigeOrder.setDoosVolgorde(doosVolgorde);
+    }
+
+    public String maakDozenString(){
+        StringBuilder dozenString = new StringBuilder();
+        int i=0;
+        for(Doos doos: huidigeOrder.getDoosVolgorde()){
+            if (i>0){
+                dozenString.append(",");
+            }
+            if(doos.getDoosId()%2==0){
+                dozenString.append("l");
+            }else{
+                dozenString.append("r");
+            }
+            i++;
+        }
+        return dozenString.toString();
     }
 
 

@@ -33,10 +33,10 @@ public class BPPPanel extends JPanel {
             int j = 0;
             int k = 0;
             for (int i = 0; i < stelling.getHuidigeOrder().getProducten().size(); i++) {
-                if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() == 0) {
+                if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() %2 == 0) {
                     g.drawString("Product " + stelling.getHuidigeOrder().getProducten().get(i).getVakId(), 2 * (xMax / 20), (yMax / 20) * (17 - k));
                     k++;
-                } else if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() == 1) {
+                } else if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() %2 != 0) {
                     g.drawString("Product " + stelling.getHuidigeOrder().getProducten().get(i).getVakId(), (xMax / 20) * 16, (yMax / 20) * (17 - j));
                     j++;
                 }

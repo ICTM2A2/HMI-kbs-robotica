@@ -39,6 +39,7 @@ public class OrderDialoogMaken extends JDialog implements ActionListener {
                 hoofdscherm.getStelling().voegProductToe(productId);
             } catch (NumberFormatException nfe){
                 System.out.println("vul een getal in");
+                hoofdscherm.schrijfTekst("vul een getal in");
             }
         }
         setVisible(false);

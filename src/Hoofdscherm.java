@@ -148,6 +148,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
                 }
             }
             if (e.getSource() == placeOrderButton) {
+                setTabblad(1);
                 stelling.plaatsOrder();
                 refreshTabel();
             }
@@ -200,5 +201,13 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         voorraadTabel.setCellSelectionEnabled(false);
         dataPanel.add(voorraadTabel);
         dataPanel.add(colomNamen);
+    }
+
+    public void setTabblad(int index){
+        jTabbedPane.setSelectedIndex(index);
+    }
+
+    public int getTabblad(){
+       return jTabbedPane.getSelectedIndex();
     }
 }
