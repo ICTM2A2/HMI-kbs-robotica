@@ -1,11 +1,11 @@
 public class Vak {
     private boolean isBezet;
-    private int xPlek;
-    private int yPlek;
-    private int vakId;
-    private Product product;
+    private final int xPlek;
+    private final int yPlek;
+    private final int vakId;
+    private final Product product;
 
-    public Vak(int x, int y, int vakId){
+    public Vak(int x, int y, int vakId) {
         this.vakId = vakId;
         isBezet = true;
         xPlek = x;
@@ -13,17 +13,13 @@ public class Vak {
         product = new Product(vakId);
     }
 
-    public String toString(){
+    public String toString() {
         String a;
-        if (product!=null){
-            a = "Vak: " + vakId + ", x: " + xPlek + " y: " + yPlek + ", bezet-status: " + isBezet + ", product: " + product;
-        } else {
-            a="Vak: " + vakId + ", x: " + xPlek + " y: " + yPlek + ", bezet-status: " + isBezet;
-        }
+        a = "Vak: " + vakId + ", x: " + xPlek + " y: " + yPlek + ", bezet-status: " + isBezet + ", product: " + product;
         return a;
     }
 
-    public void setEmpty(){
+    public void setEmpty() {
         this.isBezet = false;
     }
 

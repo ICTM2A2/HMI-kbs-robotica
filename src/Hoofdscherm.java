@@ -5,39 +5,38 @@ import java.awt.event.ActionListener;
 
 public class Hoofdscherm extends JFrame implements ActionListener {
     //tabs
-    private JPanel generalPanel = new JPanel();
-    private JPanel dataPanel = new JPanel();
-    private JTabbedPane jTabbedPane = new JTabbedPane();
-    private int width = 1000;
-    private int height = 800;
+    private final JPanel generalPanel = new JPanel();
+    private final JPanel dataPanel = new JPanel();
+    private final JTabbedPane jTabbedPane = new JTabbedPane();
+    private final int width = 1002;
+    private final int height = 800;
 
     //general tab
-    private JButton addProductButton;
-    private JButton editOrderButton;
-    private JButton placeOrderButton;
+    private final JButton addProductButton;
+    private final JButton editOrderButton;
+    private final JButton placeOrderButton;
 
-    private JTextArea JTAtext;
+    private final JTextArea JTAtext;
 
     //pakrobot tab
-    private TSPPanel pakrobotTekening;
+    private final TSPPanel pakrobotTekening;
 
     //inpakrobot tab
-    private BPPPanel inpakrobotTekening;
-
+    private final BPPPanel inpakrobotTekening;
+    //applicatie content
+    private final Stelling stelling;
     //data tab
     private JLabel orderLabel;
     private JTable voorraadTabel;
     private JTable orderTabel;
     private JScrollPane colomNamen;
 
-    //applicatie content
-    private Stelling stelling;
-
     public Hoofdscherm() {
         stelling = new Stelling(this);
         setTitle("HMI");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width, height);
+        setLocationRelativeTo(null);
 
         generalPanel.setLayout(new FlowLayout());
 
@@ -62,7 +61,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         pakrobotTekening = new TSPPanel(this);
 
         //inpakrobot tab content
-        inpakrobotTekening=new BPPPanel(this);
+        inpakrobotTekening = new BPPPanel(this);
 
         //data-panel content
         dataPanel.setLayout(new FlowLayout());
@@ -172,7 +171,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         return pakrobotTekening;
     }
 
-    public void refreshTabel(){
+    public void refreshTabel() {
         dataPanel.remove(voorraadTabel);
         dataPanel.remove(colomNamen);
         //voorraadtabel array maken
@@ -207,11 +206,11 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         dataPanel.add(colomNamen);
     }
 
-    public void setTabblad(int index){
-        jTabbedPane.setSelectedIndex(index);
+    public int getTabblad() {
+        return jTabbedPane.getSelectedIndex();
     }
 
-    public int getTabblad(){
-       return jTabbedPane.getSelectedIndex();
+    public void setTabblad(int index) {
+        jTabbedPane.setSelectedIndex(index);
     }
 }

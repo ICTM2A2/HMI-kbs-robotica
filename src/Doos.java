@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 
 public class Doos {
-    private int doosId;
+    private final int doosId;
+    private final ArrayList<Product> voorProductinhoud;
+    private final double naInhoud;
+    private final ArrayList<Product> naProductinhoud;
     //inhoud en productinhoud, hebben voor- en na-attributen zodat het live in de GUI kan worden weergegeven wanneer de producten in de doos komen
     private double voorInhoud;
-    private ArrayList<Product> voorProductinhoud;
-    private double naInhoud;
-    private ArrayList<Product> naProductinhoud;
 
     public Doos(int doosId) {
         this.doosId = doosId;
-        voorInhoud = 100;
+        voorInhoud = 150;
         voorProductinhoud = new ArrayList<>();
-        naInhoud = 100;
+        naInhoud = 150;
         naProductinhoud = new ArrayList<>();
     }
 
@@ -23,7 +23,7 @@ public class Doos {
     }
 
     public void resetInhoud() {
-        voorInhoud = 100;
+        voorInhoud = 150;
     }
 
     public String toString() {

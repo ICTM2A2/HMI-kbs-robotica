@@ -1,14 +1,14 @@
 import java.util.ArrayList;
 
 public class Stelling {
-    private Hoofdscherm hoofdscherm; //GUI
-    private Vak[] opslagplekken; //houd de voorraad bij
-    private ArrayList<Order> orderlijst; //geschiedenis van orders (oud->nieuw)
-    private Pakrobot pakrobot; //communicatie pakrobot
-    private Inpakrobot inpakrobot; //communicatie inpakrobot
+    private final Hoofdscherm hoofdscherm; //GUI
+    private final Vak[] opslagplekken; //houd de voorraad bij
+    private final ArrayList<Order> orderlijst; //geschiedenis van orders (oud->nieuw)
+    private final Pakrobot pakrobot; //communicatie pakrobot
+    private final Inpakrobot inpakrobot; //communicatie inpakrobot
+    private final ArrayList<Doos> dozen; //dozen
     private Order huidigeOrder; //actieve order
-    private ArrayList<Doos> dozen; //dozen
-    private ArrayList<Doos> ingepakteDozen; //geschiedenis van ingepakte dozen
+    private ArrayList<Doos> ingepakteDozen = new ArrayList<>(); //geschiedenis van ingepakte dozen
     private int aantalDozen;//max aantal dozen per order
     private boolean bezigMetOrder; //wanneer er een order wordt geplaatst en de robots zijn bezig, moet er niet op een knop gedrukt kunnen worden
 
@@ -25,8 +25,9 @@ public class Stelling {
             }
         }
         orderlijst = new ArrayList<>();
-        ingepakteDozen = new ArrayList<>();
+        //geschiedenis van ingepakte dozen
         dozen = new ArrayList<>();
+        //max aantal dozen per order
         aantalDozen = 2;
         for (int i = 0; i < aantalDozen; i++) {
             dozen.add(new Doos(i));
@@ -34,13 +35,6 @@ public class Stelling {
 
         pakrobot = new Pakrobot();
         inpakrobot = new Inpakrobot();
-    }
-
-    public void printVakken() {
-        for (Vak vak : opslagplekken) {
-            System.out.println(vak);
-            hoofdscherm.schrijfTekst(String.valueOf(vak));
-        }
     }
 
     public void printOrder() {
@@ -68,11 +62,6 @@ public class Stelling {
         huidigeOrder = new Order(orderlijst.size());
     }
 
-    public void volgendeProduct() {
-//        huidigeOrder.getProducten().remove(0);
-//        hoofdscherm.repaint();
-    }
-
     public void plaatsOrder() {
         if (huidigeOrder != null && huidigeOrder.getProducten().size() > 0) {
             hoofdscherm.schrijfTekst("order " + huidigeOrder.getOrderNr() + " is geplaatst!");
@@ -91,7 +80,7 @@ public class Stelling {
                 Doos d = ad.get(av.indexOf(v));
                 Doos d2;
 
-                try{
+                try {
                     d2 = ad.get(av.indexOf(v) + 1);
                 } catch (Exception ex) {
                     d2 = null;
@@ -99,12 +88,11 @@ public class Stelling {
 
                 backlog += coord;
 
-                if(d2 != null && d.getDoosId() == d2.getDoosId()) {
-                    ;
+                if (d2 != null && d.getDoosId() == d2.getDoosId()) {
                 } else {
                     pakrobot.verstuurCoord(backlog, av.size());
 
-                    if(d.getDoosId() % 2 == 0) {
+                    if (d.getDoosId() % 2 == 0) {
                         inpakrobot.verstuurRichting("l");
                     } else {
                         inpakrobot.verstuurRichting("r");
@@ -112,16 +100,8 @@ public class Stelling {
 
                     backlog = "";
                 }
-
-//                volgendeProduct();
             }
 
-            // x,y,x,y,x,y,x,y,x,y,x,y String maken om naar de pakrobot toe te sturen
-            //pakrobot.verstuurCoord(maakCoordString());
-
-            //r,l,r,l,r,l String maken om naar de inpakrobot te sturen
-            //inpakrobot.verstuurRichting(maakDozenString());
-            //System.out.println(maakDozenString());
 
             //order in de lijst plaatsen
             orderlijst.add(huidigeOrder);
@@ -129,16 +109,20 @@ public class Stelling {
             for (Vak vak : huidigeOrder.getProducten()) {
                 opslagplekken[vak.getVakId()].setEmpty();
             }
+//
             //order verwijderen uit actieve positie
             huidigeOrder = null;
-            for (int i = aantalDozen; i < aantalDozen * 2; i++) {
+
+            Doos ld = dozen.get(dozen.size() - 1); // laatste doos
+            for (int i = ld.getDoosId() + 1; i < ld.getDoosId() + aantalDozen + 1; i++) {
                 dozen.add(new Doos(i));
             }
-            for (int i = 0; i < dozen.size(); i++) {
-                ingepakteDozen.add(dozen.get(i));
+
+            for (int i = 0; i < aantalDozen; i++) {
                 dozen.remove(0);
             }
 
+//
             bezigMetOrder = false;
         } else {
             System.out.println("uw order is nog leeg!");
@@ -372,8 +356,6 @@ public class Stelling {
                 }
             }
         }
-
-
     }
 
     public void vervangTSP(int nummer) {
@@ -428,16 +410,16 @@ public class Stelling {
         huidigeOrder.setDoosVolgorde(doosVolgorde);
     }
 
-    public String maakDozenString(){
+    public String maakDozenString() {
         StringBuilder dozenString = new StringBuilder();
-        int i=0;
-        for(Doos doos: huidigeOrder.getDoosVolgorde()){
-            if (i>0){
+        int i = 0;
+        for (Doos doos : huidigeOrder.getDoosVolgorde()) {
+            if (i > 0) {
                 dozenString.append(",");
             }
-            if(doos.getDoosId()%2==0){
+            if (doos.getDoosId() % 2 == 0) {
                 dozenString.append("l");
-            }else{
+            } else {
                 dozenString.append("r");
             }
             i++;

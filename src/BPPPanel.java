@@ -2,41 +2,57 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BPPPanel extends JPanel {
-    private Hoofdscherm hoofdscherm;
+    private final Hoofdscherm hoofdscherm;
 
-    private int xMax;
-    private int yMax;
+    private final int xMax;
+    private final int yMax;
 
-    public BPPPanel(Hoofdscherm hoofdscherm){
+    public BPPPanel(Hoofdscherm hoofdscherm) {
         xMax = 980;
         yMax = 600;
-        setPreferredSize(new Dimension(xMax,yMax));
+        setPreferredSize(new Dimension(xMax, yMax));
         this.hoofdscherm = hoofdscherm;
     }
 
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         Stelling stelling = hoofdscherm.getStelling();
         super.paintComponent(g);
+
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(3));
+
         g.setColor(Color.black);
-        g.drawRect(0,0,xMax,yMax);
+        g.drawRect(0, 0, xMax, yMax);
+
+        for (Doos d:stelling.getDozen()) {
+            System.out.println(d.getDoosId());
+        }
 
         //dozen tekenen
+        // links
+        g.setColor(DoosKleuren.Doos1);
+        g.fillRect(xMax / 20, (yMax / 10) * 5, xMax / 5, (yMax / 5) * 2);
         g.setColor(Color.black);
-        g.drawRect(xMax/20, (yMax/10)*5, xMax/5, (yMax/5)*2);
-        g.drawRect((xMax/20)*15, (yMax/10)*5, xMax/5, (yMax/5)*2);
-        g.drawString("Doos "+stelling.getDozen().get(0).getDoosId(), xMax/20, (yMax/20)*9);
-        g.drawString("Doos "+stelling.getDozen().get(1).getDoosId(), (xMax/20)*15, (yMax/20)*9);
+        g.drawRect(xMax / 20, (yMax / 10) * 5, xMax / 5, (yMax / 5) * 2);
+        g.drawString("Doos " + stelling.getDozen().get(0).getDoosId(), xMax / 20, (yMax / 20) * 9);
+
+        // rechts
+        g.setColor(DoosKleuren.Doos2);
+        g.fillRect((xMax / 20) * 15, (yMax / 10) * 5, xMax / 5, (yMax / 5) * 2);
+        g.setColor(Color.black);
+        g.drawRect((xMax / 20) * 15, (yMax / 10) * 5, xMax / 5, (yMax / 5) * 2);
+        g.drawString("Doos " + stelling.getDozen().get(1).getDoosId(), (xMax / 20) * 15, (yMax / 20) * 9);
 
         //producten uit order in doos
-        if(stelling.getHuidigeOrder()!=null) {
+        if (stelling.getHuidigeOrder() != null) {
             g.setColor(Color.black);
             int j = 0;
             int k = 0;
             for (int i = 0; i < stelling.getHuidigeOrder().getProducten().size(); i++) {
-                if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() %2 == 0) {
+                if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() % 2 == 0) {
                     g.drawString("Product " + stelling.getHuidigeOrder().getProducten().get(i).getVakId(), 2 * (xMax / 20), (yMax / 20) * (17 - k));
                     k++;
-                } else if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() %2 != 0) {
+                } else if (stelling.getHuidigeOrder().getDoosVolgorde().get(i).getDoosId() % 2 != 0) {
                     g.drawString("Product " + stelling.getHuidigeOrder().getProducten().get(i).getVakId(), (xMax / 20) * 16, (yMax / 20) * (17 - j));
                     j++;
                 }
@@ -45,10 +61,10 @@ public class BPPPanel extends JPanel {
 
         //rolband tekenen
         g.setColor(Color.black);
-        g.drawOval((xMax/20)*7, (yMax/5)*2, 30, 30);
-        g.drawOval((xMax/20)*13, (yMax/5)*2, 30, 30);
-        g.drawLine((xMax/40)*15, (yMax/5)*2, (xMax/40)*27, (yMax/5)*2);
-        g.drawLine((xMax/40)*15, (yMax/20)*9, (xMax/40)*27, (yMax/20)*9);
+        g.drawOval((xMax / 20) * 7, (yMax / 5) * 2, 30, 30);
+        g.drawOval((xMax / 20) * 13, (yMax / 5) * 2, 30, 30);
+        g.drawLine((xMax / 40) * 15, (yMax / 5) * 2, (xMax / 40) * 27, (yMax / 5) * 2);
+        g.drawLine((xMax / 40) * 15, (yMax / 20) * 9, (xMax / 40) * 27, (yMax / 20) * 9);
 
 
         //richting rolband tekenen
@@ -64,22 +80,22 @@ public class BPPPanel extends JPanel {
          */
 
         //--> pijl naar rechts
-        int x1 = (xMax/20)*14, y1= (yMax/5);
-        int x2 = x1/2, y2=y1;
+        int x1 = (xMax / 20) * 14, y1 = (yMax / 5);
+        int x2 = x1 / 2, y2 = y1;
         int d = 40;
         int h = 40;
 
         int dx = x2 - x1, dy = y2 - y1;
-        double D = Math.sqrt(dx*dx + dy*dy);
+        double D = Math.sqrt(dx * dx + dy * dy);
         double xm = D - d, xn = xm, ym = h, yn = -h, x;
         double sin = dy / D, cos = dx / D;
 
-        x = xm*cos - ym*sin + x1;
-        ym = xm*sin + ym*cos + y1;
+        x = xm * cos - ym * sin + x1;
+        ym = xm * sin + ym * cos + y1;
         xm = x;
 
-        x = xn*cos - yn*sin + x1;
-        yn = xn*sin + yn*cos + y1;
+        x = xn * cos - yn * sin + x1;
+        yn = xn * sin + yn * cos + y1;
         xn = x;
 
         int[] xpoints = {x2, (int) xm, (int) xn};
@@ -89,16 +105,16 @@ public class BPPPanel extends JPanel {
         g.fillPolygon(xpoints, ypoints, 3);
 
         //<-- pijl naar links
-        x1 = (xMax/20)*7;
-        y1= (yMax/5);
-        x2 = x1*2;
-        y2=y1;
+        x1 = (xMax / 20) * 7;
+        y1 = (yMax / 5);
+        x2 = x1 * 2;
+        y2 = y1;
         d = 40;
         h = 40;
 
         dx = x2 - x1;
         dy = y2 - y1;
-        D = Math.sqrt(dx*dx + dy*dy);
+        D = Math.sqrt(dx * dx + dy * dy);
         xm = D - d;
         xn = xm;
         ym = h;
@@ -106,12 +122,12 @@ public class BPPPanel extends JPanel {
         sin = dy / D;
         cos = dx / D;
 
-        x = xm*cos - ym*sin + x1;
-        ym = xm*sin + ym*cos + y1;
+        x = xm * cos - ym * sin + x1;
+        ym = xm * sin + ym * cos + y1;
         xm = x;
 
-        x = xn*cos - yn*sin + x1;
-        yn = xn*sin + yn*cos + y1;
+        x = xn * cos - yn * sin + x1;
+        yn = xn * sin + yn * cos + y1;
         xn = x;
 
         xpoints[0] = x2;
