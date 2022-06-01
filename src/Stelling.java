@@ -45,7 +45,6 @@ public class Stelling {
 
     public void printOrder() {
         System.out.println(huidigeOrder);
-        hoofdscherm.leegTekst();
         hoofdscherm.schrijfTekst(String.valueOf(huidigeOrder));
 
         System.out.println("Producten");
@@ -132,12 +131,8 @@ public class Stelling {
             //order verwijderen uit actieve positie
             huidigeOrder = null;
             //dozen toevoegen en verwijderen uit huidige order
-            for (int i = aantalDozen; i < aantalDozen * 2; i++) {
-                dozen.add(new Doos(i));
-            }
-            for (int i = 0; i < dozen.size(); i++) {
-                ingepakteDozen.add(dozen.get(i));
-                dozen.remove(0);
+            for(Doos doos: dozen){
+                doos.emptyDoos();
             }
 
             bezigMetOrder = false;
@@ -167,6 +162,7 @@ public class Stelling {
     }
 
     public void voegProductToe(int productId) {
+        hoofdscherm.leegTekst();
         //order aanmaken als die nog niet aan is gemaakt
         if (huidigeOrder == null) {
             maakOrder();
@@ -213,6 +209,7 @@ public class Stelling {
     }
 
     public void verwijderProduct(int productId) {
+        hoofdscherm.leegTekst();
         if (huidigeOrder != null && huidigeOrder.getProducten().size() > 0) {
             if (productId >= 0 && productId <= 24) {
                 boolean isVerwijderd = false;
@@ -227,8 +224,8 @@ public class Stelling {
                     }
                 }
                 if (!isVerwijderd) {
-                    System.out.println("product" + productId + " zit niet in uw order en kan dus niet verwijderd worden");
-                    hoofdscherm.schrijfTekst("product" + productId + " zit niet in uw order en kan dus niet verwijderd worden");
+                    System.out.println("product " + productId + " zit niet in uw order en kan dus niet verwijderd worden");
+                    hoofdscherm.schrijfTekst("product " + productId + " zit niet in uw order en kan dus niet verwijderd worden");
                 }
             } else {
                 System.out.println("product " + productId + " staat niet in de stelling, getal moet tussen 0 en 24 zijn");

@@ -21,6 +21,10 @@ public class Doos {
         Inhoud = 100;
     }
 
+    public void emptyDoos(){
+        Productinhoud.clear();
+    }
+
     public String toString() {
         return "Doos: doosid=" + doosId + ", inhoud=" + Inhoud;
     }
