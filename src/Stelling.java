@@ -131,6 +131,7 @@ public class Stelling {
             }
             //order verwijderen uit actieve positie
             huidigeOrder = null;
+            //dozen toevoegen en verwijderen uit huidige order
             for (int i = aantalDozen; i < aantalDozen * 2; i++) {
                 dozen.add(new Doos(i));
             }
@@ -393,8 +394,8 @@ public class Stelling {
         int doosVol = 0;
         for (Doos doos : dozen) {
             double verschil;
-            if (doos.getVoorInhoud() >= gewicht) {
-                verschil = doos.getVoorInhoud() - gewicht;
+            if (doos.getInhoud() >= gewicht) {
+                verschil = doos.getInhoud() - gewicht;
                 if (verschil < kleinsteVerschil) {
                     System.out.println("verschil = " + verschil);
                     kleinsteVerschil = verschil;
