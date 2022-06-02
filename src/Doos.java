@@ -7,7 +7,7 @@ public class Doos {
 
     public Doos(int doosId) {
         this.doosId = doosId;
-        Inhoud = 100;
+        Inhoud = 150;
         Productinhoud = new ArrayList<>();
     }
 
@@ -18,7 +18,7 @@ public class Doos {
     }
 
     public void resetInhoud() {
-        Inhoud = 100;
+        Inhoud = 150;
     }
 
     public void emptyDoos(){
