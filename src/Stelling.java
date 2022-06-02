@@ -89,7 +89,7 @@ public class Stelling {
 
                 if (d2 != null && d.getDoosId() == d2.getDoosId()) {
                 } else {
-                    pakrobot.verstuurCoord(backlog, av.size());
+                    pakrobot.verstuurCoord(backlog);
 
                     if (d.getDoosId() % 2 == 0) {
                         inpakrobot.verstuurRichting("l");
