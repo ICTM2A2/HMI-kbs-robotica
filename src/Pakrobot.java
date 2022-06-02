@@ -8,7 +8,9 @@ public class Pakrobot {
         pakRobot.openConnection();
     }
 
-    public void verstuurCoord(String coord, int count) {
+    public void verstuurCoord(String coord) {
+        PakrobotMultiThread pmt = new PakrobotMultiThread();
+
         pakRobot.serialWrite(coord);
 
         while (!pakRobot.serialRead().trim().contains("Done")) {
@@ -18,3 +20,11 @@ public class Pakrobot {
     }
 }
 
+class PakrobotMultiThread extends Thread{
+    @Override
+    public void run() {
+        super.run();
+
+
+    }
+}
