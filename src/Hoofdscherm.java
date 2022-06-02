@@ -26,9 +26,7 @@ public class Hoofdscherm extends JFrame implements ActionListener {
     //applicatie content
     private final Stelling stelling;
     //data tab
-    private JLabel orderLabel;
     private JTable voorraadTabel;
-    private JTable orderTabel;
     private JScrollPane colomNamen;
 
     public Hoofdscherm() {
@@ -96,27 +94,6 @@ public class Hoofdscherm extends JFrame implements ActionListener {
         dataPanel.add(voorraadTabel);
         colomNamen = new JScrollPane(voorraadTabel);
         dataPanel.add(colomNamen);
-
-//        //ordertabel
-//        String[] orderKolommen = {"OrderId", "Datum",};
-//        String[][] orderData = new String[25][2];
-//
-//        if (getStelling().getHuidigeOrder() != null) {
-//            String[] orderKolommen = {"ProductId", "Gewicht", "X", "Y"};
-//            String[][] orderData = new String[getStelling().getHuidigeOrder().getProducten().size()][4];
-//            int i =0;
-//            for (Vak vak : getStelling().getHuidigeOrder().getProducten()) {
-//                orderData[i][0] = String.valueOf(vak.getVakId());
-//                orderData[i][1] = String.valueOf(vak.getProduct().getGewicht());
-//                orderData[i][2] = String.valueOf(vak.getxPlek());
-//                orderData[i][3] = String.valueOf(vak.getyPlek());
-//                i++;
-//            }
-//            orderTabel = new JTable(orderData, orderKolommen);
-//            orderTabel.setDefaultEditor(Object.class, null);
-//            orderTabel.setCellSelectionEnabled(false);
-//            dataPanel.add(orderTabel);
-//        }
 
 
         //tabladen invoegen
