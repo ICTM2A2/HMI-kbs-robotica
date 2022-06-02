@@ -156,7 +156,7 @@ public class Stelling {
         }
         //product arraycheck
         if (productId >= 0 && productId <= 24) {
-            //er mogen maar drie producten in de order zitten
+            //er mogen maar 6 producten in de order zitten
             if (huidigeOrder.getProducten().size() < 6) {
                 //ervoor zorgen dat een product niet meerdere keren toegevoegd kan worden aan de order
                 boolean isBeschikbaar = true;
@@ -401,12 +401,10 @@ public class Stelling {
         }
 
         ArrayList<Doos> doosVolgorde = new ArrayList<>();
-        int i = 0;
         for (Vak vak : huidigeOrder.getProducten()) {
             Doos doos = zoekBestFit(vak.getProduct());
             doosVolgorde.add(doos);
             doos.pakProductIn(vak.getProduct());
-            i++;
         }
         huidigeOrder.setDoosVolgorde(doosVolgorde);
     }

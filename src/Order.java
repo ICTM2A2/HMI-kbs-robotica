@@ -67,6 +67,16 @@ public class Order {
                 } else {
                     //product zit op hetzelfde y-niveau
                 }
+
+                //kortste weg op basis van "manhattan distance"
+//                double afstandTotaal = afstandX+afstandY;
+//                if(afstand > afstandTotaal){
+//                    afstand = afstandTotaal;
+//                    dichtsbij = vak;
+//                } else if (afstand == afstandTotaal){
+//                    dichtsbij = dichtsbijX;
+//                }
+                //kortste weg op basis van pythagoras
                 double afstandPyth = Math.sqrt((afstandX * afstandX) + (afstandY * afstandY));
                 if (afstand > afstandPyth) {
                     afstand = afstandPyth;
