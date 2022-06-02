@@ -3,11 +3,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class TSPPanel extends JPanel {
+    private final boolean oneLine = true;
     private final int xMax;
     private final int yMax;
     private final Hoofdscherm hoofdscherm;
     private final int size = 100;
-    private final int sizeR = 50;
+    private final int sizeR = size/2;
     private final int margin = 1;
 
     private final int[][] productCoordinaten;
@@ -158,18 +159,28 @@ public class TSPPanel extends JPanel {
             g.setColor(Color.black);
 
             for (int i = 0; i < ho.getProducten().size(); i++) {
-                if (productNr == 0) {
-                    g.drawLine(robotX + size / 2, robotY + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
-                    g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
-                } else if (productNr > 0 && productNr < 3) {
-                    g.drawLine(productCoordinaten[orderProducten.get(i - 1).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i - 1).getVakId()][1] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
-                    g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
-                } else if (productNr == 3) {
-                    g.drawLine(robotX + size / 2, robotY + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
-                    g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
-                } else if (productNr > 3) {
-                    g.drawLine(productCoordinaten[orderProducten.get(i - 1).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i - 1).getVakId()][1] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
-                    g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                if(oneLine){
+                    if (productNr == 0) {
+                        g.drawLine(robotX + size / 2, robotY + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
+                        g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                    } else if (productNr > 0) {
+                        g.drawLine(productCoordinaten[orderProducten.get(i - 1).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i - 1).getVakId()][1] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
+                        g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                    }
+                } else {
+                    if (productNr == 0) {
+                        g.drawLine(robotX + size / 2, robotY + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
+                        g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                    } else if (productNr > 0 && productNr < 3) {
+                        g.drawLine(productCoordinaten[orderProducten.get(i - 1).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i - 1).getVakId()][1] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
+                        g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                    } else if (productNr == 3) {
+                        g.drawLine(robotX + size / 2, robotY + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
+                        g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                    } else if (productNr > 3) {
+                        g.drawLine(productCoordinaten[orderProducten.get(i - 1).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i - 1).getVakId()][1] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2);
+                        g.fillOval(productCoordinaten[orderProducten.get(i).getVakId()][0] + size / 2 - 5, productCoordinaten[orderProducten.get(i).getVakId()][1] + size / 2 - 5, 10, 10);
+                    }
                 }
                 productNr++;
             }
