@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Order {
     private final int orderNr;
     private final String datum;
-    private final ArrayList<Vak> producten;
+    private ArrayList<Vak> producten;
     private ArrayList<Doos> doosVolgorde;
 
     public Order(int orderNr) {
@@ -87,6 +87,32 @@ public class Order {
             }
         }
         return dichtsbij;
+    }
+
+    public void sorteerTSP2() {
+        int size = producten.size();
+        if (size > 1) {
+            for (int i = 0; i < size - 1; i++) {
+                if(i==0) {
+                    System.out.println("product dichtstbij robot is: " + zoekDichtsbij(5,0,0));
+                    while (!producten.get(i).equals(zoekDichtsbij(5, 0, i))) {
+                        vervangTSP(i);
+                    }
+                } else{
+                    System.out.println("product dichtstbij product "+ (i-1) +" is: " + zoekDichtsbij(5,0,0));
+                    while(!producten.get(i).equals(zoekDichtsbij(producten.get(i-1).getxPlek(), producten.get(i-1).getyPlek(), i))){
+                        vervangTSP(i);
+                    }
+                }
+            }
+        }
+    }
+
+    private void vervangTSP(int nummer) {
+        //product uit order halen en er weer terug in stoppen
+        Vak vervangenProduct = producten.get(nummer);
+        producten.remove(nummer);
+        producten.add(vervangenProduct);
     }
 
     public ArrayList<Doos> getDoosVolgorde() {

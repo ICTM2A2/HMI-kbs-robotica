@@ -171,7 +171,7 @@ public class Stelling {
                         //product wordt toegevoegd
                         huidigeOrder.getProducten().add(opslagplekken[productId]);
                         //TSP algoritme --> producten sorteren om het pad te bepalen
-                        sorteerTSP();
+                        huidigeOrder.sorteerTSP2();
                         //BPP algoritme --> producten in de beste doos plaatsen
                         sorteerBPP();
                     } else {
@@ -206,6 +206,7 @@ public class Stelling {
                         isVerwijderd = true;
                         System.out.println("product " + productId + " is verwijderd uit uw order");
                         hoofdscherm.schrijfTekst("product " + productId + " is verwijderd uit uw order");
+
                         sorteerTSP();
                         sorteerBPP();
                     }
@@ -227,7 +228,7 @@ public class Stelling {
     }
 
     //tsp functies
-    public void sorteerTSP() {
+    private void sorteerTSP() {
         ArrayList<Vak> producten = huidigeOrder.getProducten();
         if (producten.size() == 2) {
             //dichtsbijzijnde product naar eerste plek verplaatsen
@@ -359,7 +360,7 @@ public class Stelling {
         }
     }
 
-    public void vervangTSP(int nummer) {
+    private void vervangTSP(int nummer) {
         ArrayList<Vak> producten = huidigeOrder.getProducten();
         //product uit order halen en er weer terug in stoppen
         Vak vak1;
