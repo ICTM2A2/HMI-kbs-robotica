@@ -30,8 +30,8 @@ public class Order {
 
     public Vak zoekDichtsbij(int x, int y, int index) {
         Vak dichtsbij = null;
-        double afstand = 1000;
-        int kleinsteX = 1000;
+        double afstand = Double.MAX_VALUE;
+        int kleinsteX = Integer.MAX_VALUE;
         Vak dichtsbijX = null;
         for (int i = index; i < producten.size(); i++) {
             if (!(x == producten.get(i).getxPlek() && y == producten.get(i).getyPlek())) {
@@ -39,13 +39,14 @@ public class Order {
                 int xPlek = vak.getxPlek();
                 int yPlek = vak.getyPlek();
 
+                //kleinste x coordinaat berekenen
                 if (producten.get(i).getxPlek() < kleinsteX) {
-                    //kleinste x coordinaat berekenen
                     kleinsteX = producten.get(i).getxPlek();
                     dichtsbijX = producten.get(i);
                 }
+
                 int afstandX = 0;
-                //afstand in een positief getal omzetten
+                //afstand x en y in een positief getal omzetten
                 if (xPlek > x) {
                     //product zit rechts
                     afstandX = xPlek - x;
@@ -55,6 +56,7 @@ public class Order {
                 } else {
                     //product zit op hetzelfde x-niveau
                 }
+
                 int afstandY = 0;
                 if (yPlek > y) {
                     //product zit boven
@@ -68,6 +70,7 @@ public class Order {
                     //product zit op hetzelfde y-niveau
                 }
 
+
                 //kortste weg op basis van "manhattan distance"
 //                double afstandTotaal = afstandX+afstandY;
 //                if(afstand > afstandTotaal){
@@ -76,12 +79,14 @@ public class Order {
 //                } else if (afstand == afstandTotaal){
 //                    dichtsbij = dichtsbijX;
 //                }
+
                 //kortste weg op basis van pythagoras
                 double afstandPyth = Math.sqrt((afstandX * afstandX) + (afstandY * afstandY));
                 if (afstand > afstandPyth) {
                     afstand = afstandPyth;
                     dichtsbij = vak;
                 } else if (afstand == afstandPyth) {
+                    //wanneer de afstand gelijk is wordt het product met de kleinste x-waarde gekozen
                     dichtsbij = dichtsbijX;
                 }
             }
