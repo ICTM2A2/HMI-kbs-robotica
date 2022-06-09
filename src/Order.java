@@ -2,7 +2,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-
 public class Order {
     private final int orderNr;
     private final String datum;
@@ -26,98 +25,52 @@ public class Order {
 
     public ArrayList<Vak> getProducten() {
         return producten;
-    }
+    }    
 
-    public Vak zoekDichtsbij(int x, int y, int index) {
-        Vak dichtsbij = null;
-        double afstand = Double.MAX_VALUE;
-        int kleinsteX = Integer.MAX_VALUE;
-        Vak dichtsbijX = null;
-        for (int i = index; i < producten.size(); i++) {
-            if (!(x == producten.get(i).getxPlek() && y == producten.get(i).getyPlek())) {
-                Vak vak = producten.get(i);
-                int xPlek = vak.getxPlek();
-                int yPlek = vak.getyPlek();
-
-                //kleinste x coordinaat berekenen
-                if (producten.get(i).getxPlek() < kleinsteX) {
-                    kleinsteX = producten.get(i).getxPlek();
-                    dichtsbijX = producten.get(i);
-                }
-
-                int afstandX = 0;
-                //afstand x en y in een positief getal omzetten
-                if (xPlek > x) {
-                    //product zit rechts
-                    afstandX = xPlek - x;
-                } else if (xPlek < x) {
-                    //product zit links
-                    afstandX = x - xPlek;
-                } else {
-                    //product zit op hetzelfde x-niveau
-                }
-
-                int afstandY = 0;
-                if (yPlek > y) {
-                    //product zit boven
-                    afstandY = yPlek - y;
-
-                } else if (yPlek < y) {
-                    //product zit onder
-                    afstandY = y - yPlek;
-
-                } else {
-                    //product zit op hetzelfde y-niveau
-                }
-
-
-                //kortste weg op basis van "manhattan distance"
-//                double afstandTotaal = afstandX+afstandY;
-//                if(afstand > afstandTotaal){
-//                    afstand = afstandTotaal;
-//                    dichtsbij = vak;
-//                } else if (afstand == afstandTotaal){
-//                    dichtsbij = dichtsbijX;
-//                }
-
-                //kortste weg op basis van pythagoras
-                double afstandPyth = Math.sqrt((afstandX * afstandX) + (afstandY * afstandY));
-                if (afstand > afstandPyth) {
-                    afstand = afstandPyth;
-                    dichtsbij = vak;
-                } else if (afstand == afstandPyth) {
-                    //wanneer de afstand gelijk is wordt het product met de kleinste x-waarde gekozen
-                    dichtsbij = dichtsbijX;
-                }
-            }
-        }
-        return dichtsbij;
-    }
-
-    public void sorteerTSP2() {
+    public void sorteerTSP() {
+        // vars
+        ArrayList<Vak> producten = new ArrayList<>(this.producten); // make clone to edit
+        ArrayList<Vak> result = new ArrayList<>();
         int size = producten.size();
-        if (size > 1) {
-            for (int i = 0; i < size - 1; i++) {
-                if(i==0) {
-                    System.out.println("product dichtstbij robot is: " + zoekDichtsbij(5,0,0));
-                    while (!producten.get(i).equals(zoekDichtsbij(5, 0, i))) {
-                        vervangTSP(i);
-                    }
-                } else{
-                    System.out.println("product dichtstbij product "+ (i-1) +" is: " + zoekDichtsbij(5,0,0));
-                    while(!producten.get(i).equals(zoekDichtsbij(producten.get(i-1).getxPlek(), producten.get(i-1).getyPlek(), i))){
-                        vervangTSP(i);
-                    }
+
+        // robot Vak
+        Vak robot = new Vak(5, 0, -1);
+
+        while (result.size() < size) {
+            Vak nearest = null;
+            double distance = Double.MAX_VALUE;
+
+            for (Vak vak : producten) {
+                Vak from = result.isEmpty() ? robot : result.get(result.size() - 1);
+
+                double vakDistance = distanceBetweenVakken(from, vak);
+                if (vakDistance < distance) {
+                    distance = vakDistance;
+                    nearest = vak;
                 }
             }
+
+            if (nearest != null) {
+                result.add(nearest);
+                producten.remove(nearest);
+            }
         }
+
+        this.producten = new ArrayList<>(result);
     }
 
-    private void vervangTSP(int nummer) {
-        //product uit order halen en er weer terug in stoppen
-        Vak vervangenProduct = producten.get(nummer);
-        producten.remove(nummer);
-        producten.add(vervangenProduct);
+    private double distanceBetweenVakken(Vak v1, Vak v2) {
+        int diffX = v1.getxPlek() - v2.getxPlek();
+        int diffY = v1.getyPlek() - v2.getyPlek();
+
+        if (diffX < 0) {
+            diffX *= -1;
+        }
+        if (diffY < 0) {
+            diffY *= -1;
+        }
+
+        return Math.sqrt(diffX * diffX + diffY * diffY);
     }
 
     public ArrayList<Doos> getDoosVolgorde() {
